@@ -13,9 +13,9 @@ using glm::vec4;
 using glm::mat4;
 
 
-mat4 BuildOrbitMatrix(float local_rotation, float radius, float orbit_rotation)
+mat4 BuildOrbitMatrix(float local_rotation, float speed, float radius, mat4 transform)
 {
-	mat4 result = glm::rotate(local_rotation, vec3(0, 1, 0)) *glm::translate(vec3(radius, 0, 0)) * glm::rotate(orbit_rotation, vec3(0, 1, 0));
+	mat4 result = glm::rotate(local_rotation*speed, vec3(0, 1, 0)) * transform * glm::translate(vec3(radius, 0, 0));
 
 	return result;
 }
@@ -82,10 +82,10 @@ int main()
 
 		mat4 suntransform = glm::rotate(timer, vec3(0, 1, 0));
 
-		mat4 child_one_transform = suntransform* glm::translate(vec3(5, 0, 0)) * glm::rotate(timer, vec3(0,1,0));
-		mat4 child_one_two_transform = BuildOrbitMatrix(timer, 10, 10);
+		mat4 child_one_transform = glm::rotate(timer, vec3(0, 1, 0)) * suntransform* glm::translate(vec3(5, 0, 0));
+		mat4 child_one_two_transform = BuildOrbitMatrix(timer, 6, 10, suntransform);
 
-		mat4 child_two_transform = child_one_transform * glm::translate(vec3(2, 0, 0))* glm::rotate(timer, vec3(1, 1, 1));
+		mat4 MoonOne = child_one_transform * glm::rotate(timer*10, vec3(0, 1, 1))* glm::translate(vec3(1.5, 0, 0));
 
 		//vec4 center = transform * vec4(0, 0, 0, 1);
 
@@ -93,7 +93,7 @@ int main()
 		Gizmos::addAABBFilled(vec3(0, 0, 0), vec3(10, 1, 1), blue);*/
 		Gizmos::addSphere(suntransform[3].xyz, 3.0f, 20, 20, red, &suntransform);
 		Gizmos::addSphere(child_one_transform[3].xyz, 1.0f, 20, 20, blue, &child_one_transform);
-		Gizmos::addSphere(child_two_transform[3].xyz, 0.5f, 20, 20, blue, &child_two_transform);
+		Gizmos::addSphere(MoonOne[3].xyz, 0.25f, 20, 20, blue, &MoonOne);
 		Gizmos::addSphere(child_one_two_transform[3].xyz, 1.50f, 20, 20, blue, &child_one_two_transform);
 		
 		Gizmos::draw(projection, view);
