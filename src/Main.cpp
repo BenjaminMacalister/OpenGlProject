@@ -10,7 +10,7 @@
 
 int main()
 {
-	CameraAndProjection app;
+	IntroToOpenGl app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

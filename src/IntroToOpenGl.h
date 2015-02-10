@@ -1,6 +1,7 @@
 #ifndef __INTROTOOPENGL_H__
 #define __INTROTOOPENGL_H__
 #include "Application.h"
+#include "CameraClass.h"
 class IntroToOpenGl : public Application
 {
 public:
@@ -14,6 +15,7 @@ public:
 	float m_camera_x;
 	float m_camera_z;
 	float m_timer;
+	FlyCamera m_Camera;
 };
 
 #endif

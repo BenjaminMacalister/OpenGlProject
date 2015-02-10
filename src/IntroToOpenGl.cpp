@@ -19,6 +19,8 @@ bool IntroToOpenGl::StartUp()
 	glClearColor(0.1f, 0.0f, 0.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	Gizmos::create();
+	m_Camera = FlyCamera();
+	m_Camera.SetSpeed(5.0f);
 	m_projection = glm::perspective(glm::radians(60.0f), 1280.0f / 720.0f, 0.1f, 1000.0f);
 	m_camera_x = -10.0f;
 	m_camera_z = -10.0f;
@@ -53,7 +55,7 @@ bool IntroToOpenGl::Update()
 		vec4 red(1, 0, 0, 1);
 		vec4 yellow(1, 1, 0, 1);
 		vec4 green(0, 1, 0, 1);
-
+		m_Camera.update(dt);
 		for (int i = 0; i <= 20; i++)
 		{
 			Gizmos::addLine(vec3(-10 + i, 0, -10), vec3(-10 + i, 0, 10), i == 10 ? white : black);
@@ -82,7 +84,8 @@ void IntroToOpenGl::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	mat4 view = glm::lookAt(vec3(10, 10, 10), vec3(0, 0, 0), vec3(0, 1, 0));
-	Gizmos::draw(m_projection, view);
+	//Gizmos::draw(m_projection, view);
+	Gizmos::draw(m_Camera.getProjectionView());
 
 	glfwSwapBuffers(this->m_window);
 	glfwPollEvents();
