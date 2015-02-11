@@ -4,13 +4,14 @@
 #include "Gizmos.h"
 #include "IntroToOpenGl.h"
 #include "CameraAndProjection.h"
+#include "Rendering Geometry.h"
 
 
 
 
 int main()
 {
-	IntroToOpenGl app;
+	RenderingGeometry app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

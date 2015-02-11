@@ -9,11 +9,6 @@ Camera::Camera()
 
 bool Camera::update()
 {
-	/*if (Application::Update() == false)
-	{
-		return false;
-	}
-	return true;*/
 	this->updateProjectionViewTransform();
 	return true;
 }
@@ -36,6 +31,8 @@ void Camera::SetPerspective(float a_FOV, float a_AR, float a_N, float a_f)
 void Camera::setLookAt(vec3 from, vec3 to, vec3 up)
 {
 	m_viewTransform = glm::lookAt(from, to, up);
+	m_WorldTransform = glm::inverse(m_viewTransform);
+	updateProjectionViewTransform();
 }
 
 mat4 Camera::getProjection()
@@ -101,8 +98,8 @@ bool FlyCamera::update(float a_DT)
 	x_delta /= (1280.0f / 2.0f);
 	y_delta /= (720.0f / 2.0f);
 
-	x_delta *= -50*a_DT;
-	y_delta *= -50*a_DT;
+	x_delta *= -100*a_DT;
+	y_delta *= -100*a_DT;
 
 	if (glfwGetMouseButton(m_window, 0))
 	{
@@ -118,7 +115,7 @@ bool FlyCamera::update(float a_DT)
 		m_WorldTransform[1] = rotation * m_WorldTransform[1];
 		m_WorldTransform[2] = rotation * m_WorldTransform[2];
 	}
-	m_WorldTransform[3][3] = 1;
+	//m_WorldTransform[3][3] = 1;
 	m_viewTransform = glm::inverse(m_WorldTransform);
 	this->updateProjectionViewTransform();
 	return true;

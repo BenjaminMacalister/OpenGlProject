@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Camera">
       <UniqueIdentifier>{8b8e2b42-23d6-402a-9404-90d2ee4ae247}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rednering Geometry">
+      <UniqueIdentifier>{b8b12834-e538-4f53-8857-762445856902}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\gl_core_4_4.h">
@@ -38,6 +41,18 @@
     </ClInclude>
     <ClInclude Include="src\CameraClass.h">
       <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering Geometry.h">
+      <Filter>Rednering Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm_header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vertex.h">
+      <Filter>Rednering Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility.h">
+      <Filter>Rednering Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -62,5 +77,19 @@
     <ClCompile Include="src\CameraClass.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering Geometry.cpp">
+      <Filter>Rednering Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility.cpp">
+      <Filter>Rednering Geometry</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\basic_vertex.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="src\basic_fragmant.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
