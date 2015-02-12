@@ -46,8 +46,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>./deps/glfw/include;./deps/glm;$(IncludePath)</IncludePath>
-    <LibraryPath>./deps/glfw/lib-vc2013;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/glfw/include;./deps/FBXLoader;./deps/glm;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/glfw/lib-vc2013;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -80,10 +80,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;FBXLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="deps\FBXLoader\FBXFile.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\CameraAndProjection.h" />
     <ClInclude Include="src\CameraClass.h" />
@@ -91,7 +92,10 @@
     <ClInclude Include="src\glm_header.h" />
     <ClInclude Include="src\gl_core_4_4.h" />
     <ClInclude Include="src\IntroToOpenGl.h" />
+    <ClInclude Include="src\Lighting.h" />
     <ClInclude Include="src\Rendering Geometry.h" />
+    <ClInclude Include="src\stb_image.h" />
+    <ClInclude Include="src\Texturing.h" />
     <ClInclude Include="src\Utility.h" />
     <ClInclude Include="src\Vertex.h" />
   </ItemGroup>
@@ -102,11 +106,17 @@
     <ClCompile Include="src\Gizmos.cpp" />
     <ClCompile Include="src\gl_core_4_4.c" />
     <ClCompile Include="src\IntroToOpenGl.cpp" />
+    <ClCompile Include="src\Lighting.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Rendering Geometry.cpp" />
+    <ClCompile Include="src\Texturing.cpp" />
     <ClCompile Include="src\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data\Shaders\Lighting_Fragmant.glsl" />
+    <None Include="data\Shaders\Lighting_Vertex.glsl" />
+    <None Include="data\Shaders\Texture_Fragmant.glsl" />
+    <None Include="data\Shaders\Texture_Vertex.glsl" />
     <None Include="src\basic_fragmant.glsl" />
     <None Include="src\basic_vertex.vs" />
   </ItemGroup>

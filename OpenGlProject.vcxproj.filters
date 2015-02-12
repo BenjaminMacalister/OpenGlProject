@@ -22,6 +22,12 @@
     <Filter Include="Rednering Geometry">
       <UniqueIdentifier>{b8b12834-e538-4f53-8857-762445856902}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Texturing">
+      <UniqueIdentifier>{15e10ca0-e0b7-47e5-aac8-362c7892d65c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lighting">
+      <UniqueIdentifier>{28592f1c-a521-427b-823e-7dd1caa894b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\gl_core_4_4.h">
@@ -54,6 +60,18 @@
     <ClInclude Include="src\Utility.h">
       <Filter>Rednering Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="src\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Texturing.h">
+      <Filter>Texturing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Lighting.h">
+      <Filter>Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="deps\FBXLoader\FBXFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gl_core_4_4.c">
@@ -83,6 +101,12 @@
     <ClCompile Include="src\Utility.cpp">
       <Filter>Rednering Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="src\Texturing.cpp">
+      <Filter>Texturing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lighting.cpp">
+      <Filter>Lighting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\basic_vertex.vs">
@@ -90,6 +114,18 @@
     </None>
     <None Include="src\basic_fragmant.glsl">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\Shaders\Texture_Vertex.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\Shaders\Texture_Fragmant.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\Shaders\Lighting_Vertex.glsl">
+      <Filter>Lighting</Filter>
+    </None>
+    <None Include="data\Shaders\Lighting_Fragmant.glsl">
+      <Filter>Lighting</Filter>
     </None>
   </ItemGroup>
 </Project>

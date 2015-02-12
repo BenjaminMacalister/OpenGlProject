@@ -46,7 +46,7 @@ void RenderingGeometry::Draw()
 	glUniform1f(_hieghtScale, 0.5);
 	glBindVertexArray(m_VAO);
 	glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, 0);
-	Gizmos::draw(m_camera.getProjectionView());
+	//Gizmos::draw(m_camera.getProjectionView());
 	glfwSwapBuffers(m_window);
 	glfwPollEvents();
 
@@ -145,8 +145,8 @@ void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols)
 
 void RenderingGeometry::generateShader()
 {
-	//LoadShaders("basic_vertex.vs", "basic_fragmant.glsl", );
-	const char * vs_source = "#version 410\n"
+	LoadShaders("./src/basic_vertex.vs", "./src/basic_fragmant.glsl", &m_ProgramID);
+	/*const char * vs_source = "#version 410\n"
 		"layout(location=0) in vec4 Position; \n"
 		"layout(location=1) in vec4 Colour; \n"
 		"out vec4 vColour;\n"
@@ -157,11 +157,12 @@ void RenderingGeometry::generateShader()
 		nColour.x = 0;\
 		nColour.y = 0;\
 		nColour.z = Colour.x +sin(time + Position.x) * heightScale;\
-		vColour = nColour;\
+		vColour = Colour;\
 						vec4 P = Position;\
 		P.y += sin(time + Position.x) * heightScale;\
-		P.y += sin(time + Position.z) * heightScale;\
-		 gl_Position = ProjectionVeiw * P;}";
+		P.y += cos(time + Position.z) * heightScale;\
+		 gl_Position = ProjectionVeiw * P;
+		 }";
 
 	const char * fs_source = "#version 410\n"
 		"in vec4 vColour;\n"
@@ -196,7 +197,7 @@ void RenderingGeometry::generateShader()
 	}
 
 	glDeleteShader(fragmant_shader);
-	glDeleteShader(vertex_shader);
+	glDeleteShader(vertex_shader);*/
 
 
 

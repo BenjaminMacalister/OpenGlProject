@@ -7,4 +7,10 @@ struct Vertex
 	vec4 position;
 	vec4 colour;
 };
+
+struct VertexTexCoord
+{
+	vec4 position;
+	vec2 tex_coord;
+};
 #endif

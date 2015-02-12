@@ -5,7 +5,7 @@ out vec4 vColour;
 uniform mat4 ProjectionVeiw;
 uniform float time;
 uniform float heightScale;
-void main() 
+void main()
 { 
 	vec4 nColour;
 	nColour.x = 0;

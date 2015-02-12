@@ -5,13 +5,15 @@
 #include "IntroToOpenGl.h"
 #include "CameraAndProjection.h"
 #include "Rendering Geometry.h"
+#include "Texturing.h"
+#include "Lighting.h"
 
 
 
 
 int main()
 {
-	RenderingGeometry app;
+	Texturing app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

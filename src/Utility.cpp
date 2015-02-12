@@ -31,9 +31,9 @@ bool LoadShaders(char* vertex_filename, char* fragmant_filename, GLuint* result)
 		unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 		unsigned int fragmant_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
-		glShaderSource(vertex_shader, 1, &vs_source, 0);
+		glShaderSource(vertex_shader, 1, &vs_source, &vertex_file_length);
 		glCompileShader(vertex_shader);
-		glShaderSource(fragmant_shader, 1, &fs_source, 0);
+		glShaderSource(fragmant_shader, 1, &fs_source, &fragmant_file_length);
 		glCompileShader(fragmant_shader);
 
 		*result = glCreateProgram();
