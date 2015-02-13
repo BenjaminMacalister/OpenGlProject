@@ -4,16 +4,8 @@
 #include "Application.h"
 #include "CameraClass.h"
 #include "tiny_obj_loader.h"
+#include "Vertex.h"
 #include <vector>
-
-struct openGLData
-{
-	unsigned int m_VAO;
-	unsigned int m_VBO;
-	unsigned int m_IBO;
-
-	unsigned int m_index_count;
-};
 
 class Lighting : public Application
 {
@@ -35,6 +27,7 @@ public:
 	vec3	m_material_colour;
 	vec3	m_ambient_light;
 	float	m_spec_power;
+	float m_timer;
 };
 
 

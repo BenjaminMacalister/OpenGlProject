@@ -19,14 +19,12 @@ void main()
 	vec3 L = normalize(light_dir);
 	
 	float d = max(0,dot(N, -L));
-
-	
 	vec3 FinalDiffuse = vec3(d) * light_colour * material_colour;
 
 	vec3 E = normalize(eye_pos - frag_Position.xyz);
 	vec3 R = reflect(L,N);
 
-	float s = max(0,dot(R, E));
+	float s = max(-1,dot(R, E));
 	s = pow(s, spec_power);
 	vec3 specular = vec3(s)*light_colour*material_colour;
 

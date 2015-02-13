@@ -85,6 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="deps\FBXLoader\FBXFile.h" />
+    <ClInclude Include="src\AdvancedTexturing.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\CameraAndProjection.h" />
     <ClInclude Include="src\CameraClass.h" />
@@ -101,6 +102,7 @@
     <ClInclude Include="src\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AdvancedTexturing.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\CameraAndProjection.cpp" />
     <ClCompile Include="src\CameraClass.cpp" />
@@ -117,6 +119,8 @@
   <ItemGroup>
     <None Include="data\Shaders\Lighting_Fragmant.glsl" />
     <None Include="data\Shaders\Lighting_Vertex.glsl" />
+    <None Include="data\Shaders\Normal_Map_Fragment.glsl" />
+    <None Include="data\Shaders\Normal_Map_Vertex.glsl" />
     <None Include="data\Shaders\Texture_Fragmant.glsl" />
     <None Include="data\Shaders\Texture_Vertex.glsl" />
     <None Include="src\basic_fragmant.glsl" />

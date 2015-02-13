@@ -12,7 +12,7 @@ bool Lighting::StartUp()
 	}
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
-	//(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	Gizmos::create();
 	m_Camera = FlyCamera();
 	m_Camera.SetSpeed(5.0f);
@@ -22,7 +22,7 @@ bool Lighting::StartUp()
 	LoadShaders("./Shaders/Lighting_Vertex.glsl", "./Shaders/Lighting_Fragmant.glsl", &m_ProgramID);
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
-	std::string err = tinyobj::LoadObj(shapes, materials, "./Models/stanford_objs/bunny.obj");
+	std::string err = tinyobj::LoadObj(shapes, materials, "./Models/stanford_objs/dragon.obj");
 	if (err.size() != 0)
 	{
 		return false;
@@ -30,7 +30,7 @@ bool Lighting::StartUp()
 	CreateOpenGLBuffers(shapes);
 	m_ambient_light = vec3(0.1f);
 	m_light_dir = vec3(0, -1, 0);
-	m_light_colour = vec3(0.6, 0.3, 0);
+	m_light_colour = vec3(0.6, 0.3, 1);
 	m_material_colour = vec3(1,1,1);
 	m_spec_power = 15;
 
@@ -49,9 +49,14 @@ bool Lighting::Update()
 	{
 		return false;
 	}
-	m_Camera.setPosition(vec3(2, 2, 2));
+	//m_Camera.setPosition(vec3(2, 2, 2));
 	float dt = (float)glfwGetTime();
 	glfwSetTime(0.0);
+	m_timer += dt;
+	//m_light_dir.x = 3 *cos(dt);
+	m_light_dir.x = sinf(m_timer) * 10;
+	m_light_dir.z = cosf(m_timer) * 10;
+	//m_camera_z = cosf(m_timer) * 10;
 
 	vec4 white(1);
 	vec4 black(0, 0, 0, 1);

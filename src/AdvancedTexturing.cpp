@@ -1,0 +1,213 @@
+#include "AdvancedTexturing.h"
+#include "gl_core_4_4.h"
+#include "GLFW/glfw3.h"
+#include "Gizmos.h"
+#include "Vertex.h"
+#include "Utility.h"
+//#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+bool AdvancedTexture::StartUp()
+{
+	if (Application::StartUp() == false)
+	{
+		return false;
+	}
+	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+	glEnable(GL_DEPTH_TEST);
+	Gizmos::create();
+
+	//LoadTexture("./textures/crate.png");
+	generateQuad(5.0f);
+	LoadTexture();
+	LoadShaders("./Shaders/Normal_Map_Vertex.glsl", "./Shaders/Normal_Map_Fragment.glsl", &m_ProgramID);
+
+	m_light_dir = glm::normalize(vec3(-1,-1,0));
+	m_light_colour = vec3(1);
+	m_ambient_light = vec3(0.1f);
+	m_spec_power =15;
+
+	m_Camera = FlyCamera();
+	m_Camera.SetSpeed(5.0f);
+	forward = false;
+	return true;
+}
+
+bool AdvancedTexture::Update()
+{
+	if (Application::Update() == false)
+	{
+		return false;
+	}
+	float dt = (float)glfwGetTime();
+	glfwSetTime(0);
+	m_light_dir = (glm::rotate(dt, vec3(0, 1, 0))* vec4(m_light_dir, 0)).xyz;
+	m_Camera.setPosition(vec3(2, 2, 2));
+
+	vec4 white(1);
+	vec4 black(0, 0, 0, 1);
+	vec4 blue(0, 0, 1, 1);
+	vec4 red(1, 0, 0, 1);
+	vec4 yellow(1, 1, 0, 1);
+	vec4 green(0, 1, 0, 1);
+
+	for (int i = 0; i <= 20; i++)
+	{
+		Gizmos::addLine(vec3(-10 + i, 0, -10), vec3(-10 + i, 0, 10), i == 10 ? white : black);
+		Gizmos::addLine(vec3(-10, 0, -10 + i), vec3(10, 0, -10 + i), i == 10 ? white : black);
+	}
+	Gizmos::addLine(m_light_dir, m_light_dir*10, vec4(1, 0, 0, 1));
+	m_Camera.update(dt);
+
+	return true;
+}
+void AdvancedTexture::ShutDown()
+{
+	Gizmos::destroy;
+	Application::ShutDown();
+}
+void AdvancedTexture::Draw()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glUseProgram(m_ProgramID);
+	Gizmos::draw(m_Camera.getProjectionView());
+
+	int proj_veiw_uniform = glGetUniformLocation(m_ProgramID, "projection_view");
+	glUniformMatrix4fv(proj_veiw_uniform, 1, GL_FALSE, (float*)&m_Camera.getProjectionView());
+
+	int ambiant_Uniform = glGetUniformLocation(m_ProgramID, "ambient_light");
+	int LightDir_Uniform = glGetUniformLocation(m_ProgramID, "light_dir");
+	int LightColour_Uniform = glGetUniformLocation(m_ProgramID, "light_colour");
+	int cameraPost_Uniform = glGetUniformLocation(m_ProgramID, "eye_pos");
+	int specPower_Uniform = glGetUniformLocation(m_ProgramID, "spec_power");
+
+
+
+	glUniform3fv(ambiant_Uniform, 1, (float*)&m_ambient_light);
+	glUniform3fv(LightDir_Uniform, 1, (float*)&m_light_dir);
+	glUniform3fv(LightColour_Uniform, 1, (float*)&m_light_colour);
+
+	vec3 camera_pos = m_Camera.m_WorldTransform[3].xyz;
+	glUniform3fv(cameraPost_Uniform, 1, (float*)&camera_pos);
+	glUniform1f(specPower_Uniform, m_spec_power);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_diffuse_texture);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_normal_texture);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_specular_texture);
+
+	glBindVertexArray(m_quad.m_VAO);
+	glDrawElements(GL_TRIANGLES, m_quad.m_index_count, GL_UNSIGNED_INT, 0);
+
+	int diffuse_location = glGetUniformLocation(m_ProgramID, "diffuse_tex");
+	int normal_tex_location = glGetUniformLocation(m_ProgramID, "normal_tex");
+	int spec_tex_location = glGetUniformLocation(m_ProgramID, "specular_tex");
+
+	glUniform1i(diffuse_location, 0);
+	glUniform1i(normal_tex_location, 1);
+	glUniform1i(spec_tex_location, 2);
+
+	glfwSwapBuffers(this->m_window);
+	glfwPollEvents();
+	Gizmos::clear();
+}
+
+void AdvancedTexture::LoadTexture()
+{
+	int width, height;
+
+	int channels;
+	unsigned char* data = stbi_load("./textures/rock_diffuse.tga", &width, &height, &channels, STBI_default);
+	glGenTextures(1, &m_diffuse_texture);
+	glBindTexture(GL_TEXTURE_2D, m_diffuse_texture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	stbi_image_free(data);
+
+	data = stbi_load("./textures/rock_normal.tga", &width, &height, &channels, STBI_default);
+	glGenTextures(1, &m_normal_texture);
+	glBindTexture(GL_TEXTURE_2D, m_normal_texture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	stbi_image_free(data);
+
+	data = stbi_load("./textures/rock_specular.tga", &width, &height, &channels, STBI_default);
+	glGenTextures(1, &m_specular_texture);
+	glBindTexture(GL_TEXTURE_2D, m_specular_texture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	stbi_image_free(data);
+}
+
+void AdvancedTexture::generateQuad(float size)
+{
+	VertexNormal vertex_data[4];
+
+	vertex_data[0].position = vec4(-size, 0, -size, 1);
+	vertex_data[1].position = vec4(-size, 0, size, 1);
+	vertex_data[2].position = vec4(size, 0, size, 1);
+	vertex_data[3].position = vec4(size, 0, -size, 1);
+
+	vertex_data[0].normal = vec4(0, 1, 0, 0);
+	vertex_data[1].normal = vec4(0, 1, 0, 0);
+	vertex_data[2].normal = vec4(0, 1, 0, 0);
+	vertex_data[3].normal = vec4(0, 1, 0, 0);
+
+	vertex_data[0].tangent = vec4(1,0,0,0);
+	vertex_data[1].tangent = vec4(1,0,0,0);
+	vertex_data[2].tangent = vec4(1,0,0,0);
+	vertex_data[3].tangent = vec4(1,0,0,0);
+	
+
+	vertex_data[0].tex_coord = vec2(0, 0);
+	vertex_data[1].tex_coord = vec2(0, 1);
+	vertex_data[2].tex_coord = vec2(1, 1);
+	vertex_data[3].tex_coord = vec2(1, 0);
+
+	unsigned int index_data[6] = { 0, 2, 1, 0, 3, 2 };
+	m_quad.m_index_count = 6;
+	glGenVertexArrays(1, &m_quad.m_VAO);
+
+	glGenBuffers(1, &m_quad.m_VBO);
+	glGenBuffers(1, &m_quad.m_IBO);
+
+	glBindVertexArray(m_quad.m_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_quad.m_VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexNormal)* 4, vertex_data, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_quad.m_IBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)* 6, index_data, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0); // position
+	glEnableVertexAttribArray(1); //normal
+	glEnableVertexAttribArray(2); //tangent
+	glEnableVertexAttribArray(3); //texture coord
+
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(VertexNormal), 0); //position
+
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE, sizeof(VertexNormal), (void*)sizeof(vec4)); //normal
+
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_TRUE, sizeof(VertexNormal), (void*)(sizeof(vec4)* 2));//tangent
+
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(VertexNormal), (void*)(sizeof(vec4)* 3));//tex_coord
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
+
+
+}

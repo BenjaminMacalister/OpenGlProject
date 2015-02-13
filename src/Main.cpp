@@ -7,13 +7,14 @@
 #include "Rendering Geometry.h"
 #include "Texturing.h"
 #include "Lighting.h"
+#include "AdvancedTexturing.h"
 
 
 
 
 int main()
 {
-	Lighting app;
+	AdvancedTexture app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

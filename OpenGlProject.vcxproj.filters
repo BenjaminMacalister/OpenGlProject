@@ -28,6 +28,9 @@
     <Filter Include="Lighting">
       <UniqueIdentifier>{28592f1c-a521-427b-823e-7dd1caa894b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Advanced Texturing">
+      <UniqueIdentifier>{c1b2f65c-6d68-494e-b7cf-0e0c8312d110}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\gl_core_4_4.h">
@@ -75,6 +78,9 @@
     <ClInclude Include="src\tiny_obj_loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\AdvancedTexturing.h">
+      <Filter>Advanced Texturing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gl_core_4_4.c">
@@ -113,6 +119,9 @@
     <ClCompile Include="src\tiny_obj_loader.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\AdvancedTexturing.cpp">
+      <Filter>Advanced Texturing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\basic_vertex.vs">
@@ -132,6 +141,12 @@
     </None>
     <None Include="data\Shaders\Lighting_Fragmant.glsl">
       <Filter>Lighting</Filter>
+    </None>
+    <None Include="data\Shaders\Normal_Map_Vertex.glsl">
+      <Filter>Advanced Texturing</Filter>
+    </None>
+    <None Include="data\Shaders\Normal_Map_Fragment.glsl">
+      <Filter>Advanced Texturing</Filter>
     </None>
   </ItemGroup>
 </Project>
