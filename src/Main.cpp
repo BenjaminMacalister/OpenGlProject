@@ -13,7 +13,7 @@
 
 int main()
 {
-	Texturing app;
+	Lighting app;
 
 	app.StartUp();
 	if (app.StartUp() == false)
