@@ -6,17 +6,54 @@
 #include "Utility.h"
 //#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+
+
+void OnMouseButton(GLFWwindow* window, int button, int press, int mod_keys)
+{
+	TwEventMouseButtonGLFW(button, press);
+}
+void OnMousePosition(GLFWwindow* window, double x, double y)
+{
+	TwEventMousePosGLFW((int)x, (int)y);
+}
+
+void OnMouseScroll(GLFWwindow* window, double x, double y)
+{
+	TwEventMouseWheelGLFW((int)y);
+}
+
+void OnKey(GLFWwindow* window, int key, int scancode, int press, int mod_keys)
+{
+	TwEventKeyGLFW(key, press);
+}
+
+void OnChar(GLFWwindow* window, unsigned int c)
+{
+	TwEventCharGLFW(c, GLFW_PRESS);
+}
+
+void OnWindowResize(GLFWwindow* window, int width, int height)
+{
+	TwWindowSize(width, height);
+	glViewport(0, 0, width, height);
+}
+
+
 bool AdvancedTexture::StartUp()
 {
 	if (Application::StartUp() == false)
 	{
 		return false;
 	}
-	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+	glfwSetMouseButtonCallback(m_window, OnMouseButton);
+	glfwSetCursorPosCallback(m_window, OnMousePosition);
+	glfwSetScrollCallback(m_window, OnMouseScroll);
+	glfwSetKeyCallback(m_window, OnKey);
+	glfwSetCharCallback(m_window, OnChar);
+	glfwSetWindowSizeCallback(m_window, OnWindowResize);
+	m_newColour = vec4(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	Gizmos::create();
-
-	//LoadTexture("./textures/crate.png");
 	generateQuad(5.0f);
 	LoadTexture();
 	LoadShaders("./Shaders/Normal_Map_Vertex.glsl", "./Shaders/Normal_Map_Fragment.glsl", &m_ProgramID);
@@ -29,6 +66,23 @@ bool AdvancedTexture::StartUp()
 	m_Camera = FlyCamera();
 	m_Camera.SetSpeed(5.0f);
 	forward = false;
+
+	TwInit(TW_OPENGL_CORE, nullptr);
+	TwWindowSize(1280, 720);
+
+	m_bar = TwNewBar("My new Bar");
+
+	TwAddVarRW(m_bar, "Clear Colour", TW_TYPE_COLOR4F, &m_newColour, "");
+	TwAddVarRW(m_bar, "Light Colour", TW_TYPE_COLOR3F, &m_light_colour, "group = Light");
+	TwAddVarRW(m_bar, "Light Direction", TW_TYPE_DIR3F, &m_light_dir, "group = Light");
+	TwAddVarRW(m_bar, "Specular Power", TW_TYPE_FLOAT, &m_spec_power, "group = Light min=0 max=100 step=0.05");
+
+	TwAddVarRW(m_bar, "Draw Gizmos", TW_TYPE_BOOL8, &m_draw_gizmos, "precision=5");
+
+	TwAddVarRO(m_bar, "FPS", TW_TYPE_FLOAT, &m_fps, "");
+	m_draw_gizmos = true;
+
+
 	return true;
 }
 
@@ -38,7 +92,9 @@ bool AdvancedTexture::Update()
 	{
 		return false;
 	}
+	glClearColor(m_newColour.x, m_newColour.y, m_newColour.z, m_newColour.w);
 	float dt = (float)glfwGetTime();
+	m_fps = 1 / dt;
 	glfwSetTime(0);
 	m_light_dir = (glm::rotate(dt, vec3(0, 1, 0))* vec4(m_light_dir, 0)).xyz;
 	m_Camera.setPosition(vec3(2, 2, 2));
@@ -55,7 +111,7 @@ bool AdvancedTexture::Update()
 		Gizmos::addLine(vec3(-10 + i, 0, -10), vec3(-10 + i, 0, 10), i == 10 ? white : black);
 		Gizmos::addLine(vec3(-10, 0, -10 + i), vec3(10, 0, -10 + i), i == 10 ? white : black);
 	}
-	Gizmos::addLine(m_light_dir, m_light_dir*10, vec4(1, 0, 0, 1));
+	Gizmos::addLine(m_light_dir, m_light_dir*m_spec_power, vec4(1, 0, 0, 1));
 	m_Camera.update(dt);
 
 	return true;
@@ -63,13 +119,14 @@ bool AdvancedTexture::Update()
 void AdvancedTexture::ShutDown()
 {
 	Gizmos::destroy;
+	TwDeleteAllBars();
+	TwTerminate();
 	Application::ShutDown();
 }
 void AdvancedTexture::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(m_ProgramID);
-	Gizmos::draw(m_Camera.getProjectionView());
 
 	int proj_veiw_uniform = glGetUniformLocation(m_ProgramID, "projection_view");
 	glUniformMatrix4fv(proj_veiw_uniform, 1, GL_FALSE, (float*)&m_Camera.getProjectionView());
@@ -109,7 +166,11 @@ void AdvancedTexture::Draw()
 	glUniform1i(diffuse_location, 0);
 	glUniform1i(normal_tex_location, 1);
 	glUniform1i(spec_tex_location, 2);
-
+	if (m_draw_gizmos == true)
+	{
+		Gizmos::draw(m_Camera.getProjectionView());
+	}
+	TwDraw();
 	glfwSwapBuffers(this->m_window);
 	glfwPollEvents();
 	Gizmos::clear();
@@ -130,7 +191,7 @@ void AdvancedTexture::LoadTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	stbi_image_free(data);
 
-	data = stbi_load("./textures/rock_normal.tga", &width, &height, &channels, STBI_default);
+	data = stbi_load("./textures/four_normal.tga", &width, &height, &channels, STBI_default);
 	glGenTextures(1, &m_normal_texture);
 	glBindTexture(GL_TEXTURE_2D, m_normal_texture);
 
@@ -140,7 +201,7 @@ void AdvancedTexture::LoadTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	stbi_image_free(data);
 
-	data = stbi_load("./textures/rock_specular.tga", &width, &height, &channels, STBI_default);
+	data = stbi_load("./textures/four_specular.tga", &width, &height, &channels, STBI_default);
 	glGenTextures(1, &m_specular_texture);
 	glBindTexture(GL_TEXTURE_2D, m_specular_texture);
 

@@ -12,7 +12,7 @@ bool Lighting::StartUp()
 	}
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_POLYGON_MODE);
 	Gizmos::create();
 	m_Camera = FlyCamera();
 	m_Camera.SetSpeed(5.0f);

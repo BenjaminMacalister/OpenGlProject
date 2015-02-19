@@ -24,7 +24,7 @@ void main()
 	vec3 E = normalize(eye_pos - frag_Position.xyz);
 	vec3 R = reflect(L,N);
 
-	float s = max(-1,dot(R, E));
+	float s = max(0,dot(R, E));
 	s = pow(s, spec_power);
 	vec3 specular = vec3(s)*light_colour*material_colour;
 

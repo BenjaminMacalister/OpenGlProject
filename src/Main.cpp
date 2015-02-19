@@ -2,19 +2,14 @@
 #include "GLFW\glfw3.h"
 #include <cstdio>
 #include "Gizmos.h"
-#include "IntroToOpenGl.h"
-#include "CameraAndProjection.h"
-#include "Rendering Geometry.h"
-#include "Texturing.h"
-#include "Lighting.h"
-#include "AdvancedTexturing.h"
+#include "Quaternions.h"
 
 
 
 
 int main()
 {
-	AdvancedTexture app;
+	Quaternions app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

@@ -101,7 +101,7 @@ bool FlyCamera::update(float a_DT)
 	x_delta *= -100*a_DT;
 	y_delta *= -100*a_DT;
 
-	if (glfwGetMouseButton(m_window, 0))
+	if (glfwGetMouseButton(m_window, 1))
 	{
 		glfwSetCursorPos(m_window, 1280.0f / 2.0f, 720.0f / 2.0f);
 		vec3 camera_Right = (vec3)m_WorldTransform[0];
