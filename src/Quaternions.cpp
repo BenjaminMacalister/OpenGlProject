@@ -17,23 +17,28 @@ bool Quaternions::StartUp()
 	m_Camera.SetSpeed(5.0f);
 
 	m_hipFrames[0].position = vec3(0, 5, 0);
-	m_hipFrames[0].rotation = glm::quat(vec3(-1, 0, 0));
+	m_hipFrames[0].rotation = glm::quat(vec3(-0.5, 0, 0));
 
 	m_kneeFrames[0].position = vec3(0, -2.5, 0);
 	m_kneeFrames[0].rotation = glm::quat(vec3(-1, 0, 0));
 
 	m_ankleFrames[0].position = vec3(0, -2.5, 0);
-	m_ankleFrames[0].rotation = glm::quat(vec3(-1, 0, 0));
+	m_ankleFrames[0].rotation = glm::quat(vec3(0, 0, 0));
 
 
 	m_hipFrames[1].position = vec3(0, 5, 0);
-	m_hipFrames[1].rotation = glm::quat(vec3(0, 0, 0));
+	m_hipFrames[1].rotation = glm::quat(vec3(1, 0, 0));
 
 	m_kneeFrames[1].position = vec3(0, -2.5, 0);
 	m_kneeFrames[1].rotation = glm::quat(vec3(0, 0, 0));
 
 	m_ankleFrames[1].position = vec3(0, -2.5, 0);
-	m_ankleFrames[1].rotation = glm::quat(vec3(0, 0, 0));
+	m_ankleFrames[1].rotation = glm::quat(vec3(1, 0, 0));
+
+	m_footFrame[0].position = vec3(0, -1, 0);
+	m_footFrame[0].rotation = glm::quat(vec3(-1, 0, 0));
+	m_footFrame[1].position = vec3(0, -1, 0);
+	m_footFrame[1].rotation = glm::quat(vec3(1, 0, 0));
 
 
 	return true;
@@ -65,22 +70,27 @@ bool Quaternions::Update()
 
 	m_hip_bone = EvaluateKeyFrames(m_hipFrames[0], m_hipFrames[1], sin_wave);
 	m_knee_bone = EvaluateKeyFrames(m_kneeFrames[0], m_kneeFrames[1], sin_wave);
-	m_ankle_bone = EvaluateKeyFrames(m_ankleFrames[0], m_kneeFrames[1], sin_wave);
+	m_ankle_bone = EvaluateKeyFrames(m_ankleFrames[0], m_ankleFrames[1], sin_wave);
+	m_foot_bone = EvaluateKeyFrames(m_footFrame[0], m_footFrame[1], sin_wave);
 
 	mat4 globalHip = m_hip_bone;
-	mat4 globalKnee = m_hip_bone * m_knee_bone;
+	mat4 globalKnee = globalHip * m_knee_bone;
 	mat4 globalAnkle = globalKnee * m_ankle_bone;
+	mat4 globalFoot = globalAnkle * m_foot_bone;
 
 	vec3 hipPos = globalHip[3].xyz;
 	vec3 kneePos = globalKnee[3].xyz;
 	vec3 anklePos = globalAnkle[3].xyz;
+	vec3 footPos = globalFoot[3].xyz;
 
 	Gizmos::addAABB(hipPos, vec3(0.5f), vec4(0, 0, 1, 1), &globalHip);
-	Gizmos::addAABB(kneePos, vec3(0.5f), vec4(1, 0, 1, 1), &globalHip);
-	Gizmos::addAABB(anklePos, vec3(0.5f), vec4(1, 1, 0, 1), &globalHip);
+	Gizmos::addAABB(kneePos, vec3(0.5f), vec4(1, 0, 1, 1), &globalKnee);
+	Gizmos::addAABB(anklePos, vec3(0.5f), vec4(1, 1, 0, 1), &globalAnkle);
+	Gizmos::addAABB(footPos, vec3(0.5f), vec4(1, 1, 0, 1), &globalFoot);
 
 	Gizmos::addLine(hipPos, kneePos, vec4(1, 0, 0,1));
 	Gizmos::addLine(kneePos, anklePos, vec4(0, 0, 1, 1));
+	Gizmos::addLine(anklePos, footPos, vec4(0, 1, 0, 1));
 
 
 	vec4 white(1);

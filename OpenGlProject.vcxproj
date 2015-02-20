@@ -41,14 +41,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>./deps/AntTweakBar/include;./deps/glfw/include;./deps/glm;$(IncludePath)</IncludePath>
-    <LibraryPath>./deps/AntTweakBar/lib;./deps/glfw/lib-vc2013;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/FBXLoader;./deps/AntTweakBar/include;./deps/glfw/include;./deps/glm;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/FBXLoader;./deps/AntTweakBar/lib;./deps/glfw/lib-vc2013;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>./deps/AntTweakBar/include;./deps/glfw/include;./deps/FBXLoader;./deps/glm;$(IncludePath)</IncludePath>
-    <LibraryPath>./deps/AntTweakBar/lib;./deps/glfw/lib-vc2013;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/FBXLoader;./deps/AntTweakBar/include;./deps/glfw/include;./deps/FBXLoader;./deps/glm;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/FBXLoader;./deps/AntTweakBar/lib;./deps/glfw/lib-vc2013;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -63,7 +63,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>AntTweakBar.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AntTweakBar.lib;glfw3.lib;opengl32.lib;FBXLoader_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -88,6 +88,7 @@
   <ItemGroup>
     <ClInclude Include="deps\FBXLoader\FBXFile.h" />
     <ClInclude Include="src\AdvancedTexturing.h" />
+    <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\CameraAndProjection.h" />
     <ClInclude Include="src\CameraClass.h" />
@@ -106,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AdvancedTexturing.cpp" />
+    <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\CameraAndProjection.cpp" />
     <ClCompile Include="src\CameraClass.cpp" />
@@ -121,6 +123,8 @@
     <ClCompile Include="src\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data\Shaders\AnimationFragment.glsl" />
+    <None Include="data\Shaders\AnimationVertex.glsl" />
     <None Include="data\Shaders\Lighting_Fragmant.glsl" />
     <None Include="data\Shaders\Lighting_Vertex.glsl" />
     <None Include="data\Shaders\Normal_Map_Fragment.glsl" />

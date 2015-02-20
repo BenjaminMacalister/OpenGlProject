@@ -21,10 +21,13 @@ public:
 	KeyFrame m_hipFrames[2];
 	KeyFrame m_kneeFrames[2];
 	KeyFrame m_ankleFrames[2];
+	KeyFrame m_footFrame[2];
 
 	mat4 m_hip_bone;
 	mat4 m_knee_bone;
 	mat4 m_ankle_bone;
+	mat4 m_foot_bone;
+
 	float m_timer;
 };
 

@@ -2,14 +2,14 @@
 #include "GLFW\glfw3.h"
 #include <cstdio>
 #include "Gizmos.h"
-#include "Quaternions.h"
+#include "Animation.h"
 
 
 
 
 int main()
 {
-	Quaternions app;
+	Animation app;
 
 	app.StartUp();
 	if (app.StartUp() == false)
