@@ -44,7 +44,7 @@ bool CameraAndProjection::Update()
 }
 void CameraAndProjection::ShutDown()
 {
-	Gizmos::destroy;
+	Gizmos::destroy();
 	Application::ShutDown();
 }
 void CameraAndProjection::Draw()

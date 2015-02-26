@@ -2,14 +2,14 @@
 #include "GLFW\glfw3.h"
 #include <cstdio>
 #include "Gizmos.h"
-#include "Animation.h"
+#include "Particle.h"
 
 
 
 
 int main()
 {
-	Animation app;
+	Particle app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

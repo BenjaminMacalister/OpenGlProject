@@ -4,6 +4,7 @@
 
 #include "glm/glm.hpp"
 #include "glm/ext.hpp"
+#include "AntTweakBar.h"
 
 using glm::vec2;
 using glm::vec3;
@@ -22,6 +23,8 @@ public:
 	virtual bool Update();
 	virtual void Draw();
 	GLFWwindow* m_window;
+	TwBar* m_bar;
+	float m_fps;
 };
 
 #endif  //close application if it already exists

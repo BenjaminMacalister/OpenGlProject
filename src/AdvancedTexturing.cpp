@@ -8,36 +8,6 @@
 #include "stb_image.h"
 
 
-void OnMouseButton(GLFWwindow* window, int button, int press, int mod_keys)
-{
-	TwEventMouseButtonGLFW(button, press);
-}
-void OnMousePosition(GLFWwindow* window, double x, double y)
-{
-	TwEventMousePosGLFW((int)x, (int)y);
-}
-
-void OnMouseScroll(GLFWwindow* window, double x, double y)
-{
-	TwEventMouseWheelGLFW((int)y);
-}
-
-void OnKey(GLFWwindow* window, int key, int scancode, int press, int mod_keys)
-{
-	TwEventKeyGLFW(key, press);
-}
-
-void OnChar(GLFWwindow* window, unsigned int c)
-{
-	TwEventCharGLFW(c, GLFW_PRESS);
-}
-
-void OnWindowResize(GLFWwindow* window, int width, int height)
-{
-	TwWindowSize(width, height);
-	glViewport(0, 0, width, height);
-}
-
 
 bool AdvancedTexture::StartUp()
 {
@@ -45,12 +15,6 @@ bool AdvancedTexture::StartUp()
 	{
 		return false;
 	}
-	glfwSetMouseButtonCallback(m_window, OnMouseButton);
-	glfwSetCursorPosCallback(m_window, OnMousePosition);
-	glfwSetScrollCallback(m_window, OnMouseScroll);
-	glfwSetKeyCallback(m_window, OnKey);
-	glfwSetCharCallback(m_window, OnChar);
-	glfwSetWindowSizeCallback(m_window, OnWindowResize);
 	m_newColour = vec4(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	Gizmos::create();
@@ -118,7 +82,7 @@ bool AdvancedTexture::Update()
 }
 void AdvancedTexture::ShutDown()
 {
-	Gizmos::destroy;
+	Gizmos::destroy();
 	TwDeleteAllBars();
 	TwTerminate();
 	Application::ShutDown();
@@ -181,7 +145,7 @@ void AdvancedTexture::LoadTexture()
 	int width, height;
 
 	int channels;
-	unsigned char* data = stbi_load("./textures/rock_diffuse.tga", &width, &height, &channels, STBI_default);
+	unsigned char* data = stbi_load("./textures/crate.png", &width, &height, &channels, STBI_default);
 	glGenTextures(1, &m_diffuse_texture);
 	glBindTexture(GL_TEXTURE_2D, m_diffuse_texture);
 

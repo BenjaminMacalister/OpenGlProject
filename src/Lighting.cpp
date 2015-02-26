@@ -86,7 +86,7 @@ bool Lighting::Update()
 void Lighting::ShutDown()
 {
 	CleanUpOpenGLBuffers();
-	Gizmos::destroy;
+	Gizmos::destroy();
 
 	Application::ShutDown();
 }

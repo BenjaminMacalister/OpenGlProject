@@ -37,6 +37,9 @@
     <Filter Include="Animation">
       <UniqueIdentifier>{322bebb6-1ad6-4cd6-a22b-e5cabe5fa234}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Particles">
+      <UniqueIdentifier>{4d54b18f-74b9-455d-81ec-3393b0f30fb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\gl_core_4_4.h">
@@ -93,6 +96,12 @@
     <ClInclude Include="src\Animation.h">
       <Filter>Animation</Filter>
     </ClInclude>
+    <ClInclude Include="src\Particle.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Emitter.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gl_core_4_4.c">
@@ -140,6 +149,12 @@
     <ClCompile Include="src\Animation.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
+    <ClCompile Include="src\Particle.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Emitter.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\basic_vertex.vs">
@@ -171,6 +186,12 @@
     </None>
     <None Include="data\Shaders\AnimationVertex.glsl">
       <Filter>Animation</Filter>
+    </None>
+    <None Include="data\Shaders\ParticleVertex.glsl">
+      <Filter>Particles</Filter>
+    </None>
+    <None Include="data\Shaders\ParticleFragment.glsl">
+      <Filter>Particles</Filter>
     </None>
   </ItemGroup>
 </Project>

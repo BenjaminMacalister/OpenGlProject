@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "CameraClass.h"
 #include "Vertex.h"
-#include "AntTweakBar.h"
 
 
 class AdvancedTexture : public Application
@@ -34,7 +33,7 @@ public:
 	unsigned int m_ProgramID;
 	float m_time;
 	bool forward;
-	TwBar* m_bar;
+	//TwBar* m_bar;
 	vec4 m_newColour;
 
 };

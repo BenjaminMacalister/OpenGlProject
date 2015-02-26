@@ -111,7 +111,7 @@ bool Quaternions::Update()
 }
 void Quaternions::ShutDown()
 {
-	Gizmos::destroy;
+	Gizmos::destroy();
 	Application::ShutDown();
 }
 void Quaternions::Draw()

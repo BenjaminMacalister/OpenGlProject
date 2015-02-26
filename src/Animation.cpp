@@ -59,7 +59,7 @@ bool Animation::Update()
 	FBXAnimation* anim = m_file->getAnimationByIndex(0);
 	//skele->evaluate(anim, m_timer);
 	EvaluateSkeleton(anim, skele, m_timer);
-	for (int i = 0; i < skele->m_boneCount; i++)
+	for (unsigned int i = 0; i < skele->m_boneCount; i++)
 	{
 		skele->m_nodes[i]->updateGlobalTransform();
 		mat4 nodeGlobal = skele->m_nodes[i]->m_globalTransform;
@@ -80,7 +80,7 @@ void Animation::ShutDown()
 {
 	m_file->unload();
 	delete m_file;
-	Gizmos::destroy;
+	Gizmos::destroy();
 	Application::ShutDown();
 }
 void Animation::Draw()
@@ -120,7 +120,7 @@ void Animation::GenerateGLMeshes(FBXFile* fbx)
 	unsigned int meshCount = fbx->getMeshCount();
 	m_meshes.resize(meshCount);
 
-	for (int meshIndex = 0; meshIndex < meshCount; meshIndex++)
+	for (unsigned int meshIndex = 0; meshIndex < meshCount; meshIndex++)
 	{
 		FBXMeshNode* currMesh = fbx->getMeshByIndex(meshIndex);
 		m_meshes[meshIndex].m_index_count = currMesh->m_indices.size();
@@ -178,7 +178,7 @@ void Animation::EvaluateSkeleton(FBXAnimation* anim, FBXSkeleton* skeleton, floa
 		mat4 localTransform = glm::translate(newPos)*glm::toMat4(newRot) * glm::scale(newScale);
 
 		//set FBXNode's local transforms to match
-		int boneIndex = anim->m_tracks[trackIndex].m_boneIndex;
+		unsigned int boneIndex = anim->m_tracks[trackIndex].m_boneIndex;
 		if (boneIndex < skeleton->m_boneCount)
 		{
 			skeleton->m_nodes[boneIndex]->m_localTransform = localTransform;
