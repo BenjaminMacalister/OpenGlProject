@@ -1,67 +1,87 @@
 #include <cstdio>
 #include "gl_core_4_4.h"
-bool LoadShaders(char* vertex_filename, char* fragmant_filename, GLuint* result)
+bool LoadShaderType(char* filename, GLenum shaderType, unsigned int* output)
 {
-	//unsigned int result =0;
-	bool succeded = false;
-	FILE* vertex_file = fopen(vertex_filename, "r");
-	FILE* fragmant_file = fopen(fragmant_filename, "r");
-
-	if (vertex_file == 0 || fragmant_file == 0)
+	bool succeded = true;
+	FILE* ShaderFile = fopen(filename, "r");
+	if (ShaderFile == 0)
 	{
+		succeded = false;
 	}
 	else
 	{
-		fseek(vertex_file, 0, SEEK_END);
-		int vertex_file_length = ftell(vertex_file);
-		fseek(vertex_file, 0, SEEK_SET);
-
-
-		fseek(fragmant_file, 0, SEEK_END);
-		int fragmant_file_length = ftell(fragmant_file);
-		fseek(fragmant_file, 0, SEEK_SET);
-
-		char *vs_source = new char[vertex_file_length];
-		char *fs_source = new char[fragmant_file_length];
-
-		vertex_file_length = fread(vs_source, 1, vertex_file_length, vertex_file);
-		fragmant_file_length= fread(fs_source, 1, fragmant_file_length, fragmant_file);
-
-		succeded = true;
-		unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-		unsigned int fragmant_shader = glCreateShader(GL_FRAGMENT_SHADER);
-
-		glShaderSource(vertex_shader, 1, &vs_source, &vertex_file_length);
-		glCompileShader(vertex_shader);
-		glShaderSource(fragmant_shader, 1, &fs_source, &fragmant_file_length);
-		glCompileShader(fragmant_shader);
-
-		*result = glCreateProgram();
-		glAttachShader(*result, vertex_shader);
-		glAttachShader(*result, fragmant_shader);
-		glLinkProgram(*result);
-
-		//error checking
+		fseek(ShaderFile, 0, SEEK_END);
+		int Shader = ftell(ShaderFile);
+		fseek(ShaderFile, 0, SEEK_SET);
+		char *shaderSource = new char[Shader];
+		Shader = fread(shaderSource, 1, Shader, ShaderFile);
+		unsigned int ShaderHandle = glCreateShader(shaderType);
 		int success = GL_FALSE;
-		glGetProgramiv(*result, GL_LINK_STATUS, &success);
+		glShaderSource(ShaderHandle, 1, &shaderSource, &Shader);
+		glCompileShader(ShaderHandle);
+		int logLenght = 0;
+		glGetShaderiv(ShaderHandle, GL_COMPILE_STATUS, &success);
 		if (success == GL_FALSE)
 		{
 			int infoLogLength = 0;
-			glGetProgramiv(*result, GL_INFO_LOG_LENGTH, &infoLogLength);
+			glGetShaderiv(ShaderHandle, GL_INFO_LOG_LENGTH, &infoLogLength);
 			char* infoLog = new char[infoLogLength];
-			glGetProgramInfoLog(*result, infoLogLength, 0, infoLog);
+			glGetShaderInfoLog(ShaderHandle, infoLogLength, 0, infoLog);
 			printf("ERROR: STUFFED UP\n\n");
 			printf("%s", infoLog);
 			delete[] infoLog;
 			succeded = false;
 		}
-		glDeleteShader(fragmant_shader);
-		glDeleteShader(vertex_shader);
-		delete[] vs_source;
-		delete[] fs_source;
+		if (succeded)
+		{
+			*output = ShaderHandle;
+		}
+		delete[] shaderSource;
+		fclose(ShaderFile);
 	}
-	fclose(vertex_file);
-	fclose(fragmant_file);
+	return succeded;
+}
+
+bool LoadShaders(char* vertex_filename, char* geometry_filename, char* fragmant_filename, GLuint* result)
+{
+	//unsigned int result =0;
+	bool succeded = true;
+
+	unsigned int vertexShader;
+	unsigned int fragmentShader;
+	unsigned int geometryShader;
+	*result = glCreateProgram();
+	LoadShaderType(vertex_filename, GL_VERTEX_SHADER, &vertexShader);
+	glAttachShader(*result, vertexShader);
+	glDeleteShader(vertexShader);
+	if (geometry_filename != nullptr)
+	{
+		LoadShaderType(geometry_filename, GL_GEOMETRY_SHADER, &geometryShader);
+		glAttachShader(*result, geometryShader);
+		glDeleteShader(geometryShader);
+	}
+	if (fragmant_filename != nullptr)
+	{
+		LoadShaderType(fragmant_filename, GL_FRAGMENT_SHADER, &fragmentShader);
+		glAttachShader(*result, fragmentShader);
+		glDeleteShader(fragmentShader);
+	}
+	glLinkProgram(*result);
+
+	GLint Success;
+	//error checking
+	glGetProgramiv(*result, GL_LINK_STATUS, &Success);
+	if (Success == GL_FALSE)
+	{
+		int infoLogLength = 0;
+		glGetProgramiv(*result, GL_INFO_LOG_LENGTH, &infoLogLength);
+		char* infoLog = new char[infoLogLength];
+		glGetProgramInfoLog(*result, infoLogLength, 0, infoLog);
+		printf("ERROR: STUFFED UP\n\n");
+		printf("%s", infoLog);
+		delete[] infoLog;
+		succeded = false;
+	}
 	return succeded;
 
 }

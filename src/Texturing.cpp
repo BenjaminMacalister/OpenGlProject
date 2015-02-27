@@ -18,7 +18,7 @@ bool Texturing::StartUp()
 
 	LoadTexture("./textures/crate.png");
 	generateQuad(5.0f);
-	LoadShaders("./Shaders/Texture_Vertex.glsl", "./Shaders/Texture_Fragmant.glsl", &m_ProgramID);
+	LoadShaders("./Shaders/Texture_Vertex.glsl",nullptr, "./Shaders/Texture_Fragmant.glsl", &m_ProgramID);
 	m_Camera = FlyCamera();
 	m_Camera.SetSpeed(5.0f);
 	forward = false;

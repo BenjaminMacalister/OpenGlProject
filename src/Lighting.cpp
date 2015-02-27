@@ -19,7 +19,7 @@ bool Lighting::StartUp()
 
 	
 
-	LoadShaders("./Shaders/Lighting_Vertex.glsl", "./Shaders/Lighting_Fragmant.glsl", &m_ProgramID);
+	LoadShaders("./Shaders/Lighting_Vertex.glsl",nullptr, "./Shaders/Lighting_Fragmant.glsl", &m_ProgramID);
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	std::string err = tinyobj::LoadObj(shapes, materials, "./Models/stanford_objs/dragon.obj");
@@ -40,7 +40,7 @@ bool Lighting::StartUp()
 void Lighting::reloadShader()
 {
 	glDeleteProgram(m_ProgramID);
-	LoadShaders("./Shaders/Lighting_Vertex.glsl", "./Shaders/Lighting_Fragmant.glsl", &m_ProgramID);
+	LoadShaders("./Shaders/Lighting_Vertex.glsl",nullptr, "./Shaders/Lighting_Fragmant.glsl", &m_ProgramID);
 }
 
 bool Lighting::Update()

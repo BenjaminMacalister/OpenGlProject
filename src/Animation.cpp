@@ -21,7 +21,7 @@ bool Animation::StartUp()
 	m_file->load("./models/characters/Enemyelite/EnemyElite.fbx");
 	m_file->initialiseOpenGLTextures();
 	GenerateGLMeshes(m_file);
-	LoadShaders("./Shaders/AnimationVertex.glsl", "./Shaders/AnimationFragment.glsl", &m_ProgramID);
+	LoadShaders("./Shaders/AnimationVertex.glsl",nullptr, "./Shaders/AnimationFragment.glsl", &m_ProgramID);
 	return true;
 }
 

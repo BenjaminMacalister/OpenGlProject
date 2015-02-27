@@ -2,14 +2,14 @@
 #include "GLFW\glfw3.h"
 #include <cstdio>
 #include "Gizmos.h"
-#include "Particle.h"
+#include "GPUParticle.h"
 
 
 
 
 int main()
 {
-	Particle app;
+	GPUParticles app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

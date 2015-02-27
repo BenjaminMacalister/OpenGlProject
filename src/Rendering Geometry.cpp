@@ -145,7 +145,7 @@ void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols)
 
 void RenderingGeometry::generateShader()
 {
-	LoadShaders("./src/basic_vertex.vs", "./src/basic_fragmant.glsl", &m_ProgramID);
+	LoadShaders("./src/basic_vertex.vs",nullptr,  "./src/basic_fragmant.glsl", &m_ProgramID);
 	/*const char * vs_source = "#version 410\n"
 		"layout(location=0) in vec4 Position; \n"
 		"layout(location=1) in vec4 Colour; \n"

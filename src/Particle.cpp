@@ -42,7 +42,7 @@ bool Particle::StartUp()
 	TwAddVarRW(m_bar, "StartColour", TW_TYPE_COLOR4F, &StartPatritcleColour, "");
 	TwAddVarRW(m_bar, "EndColour", TW_TYPE_COLOR4F, &endParticleColour, "");
 	LoadTexture();
-	LoadShaders("./Shaders/ParticleVertex.glsl", "./Shaders/ParticleFragment.glsl", &m_ProgramID);
+	LoadShaders("./Shaders/ParticleVertex.glsl",nullptr, "./Shaders/ParticleFragment.glsl", &m_ProgramID);
 	
 	return true;
 }

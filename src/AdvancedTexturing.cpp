@@ -20,7 +20,7 @@ bool AdvancedTexture::StartUp()
 	Gizmos::create();
 	generateQuad(5.0f);
 	LoadTexture();
-	LoadShaders("./Shaders/Normal_Map_Vertex.glsl", "./Shaders/Normal_Map_Fragment.glsl", &m_ProgramID);
+	LoadShaders("./Shaders/Normal_Map_Vertex.glsl",nullptr, "./Shaders/Normal_Map_Fragment.glsl", &m_ProgramID);
 
 	m_light_dir = glm::normalize(vec3(-1,-1,0));
 	m_light_colour = vec3(1);
