@@ -87,7 +87,7 @@ void Animation::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(m_ProgramID);
-	/*int proj_veiw_uniform = glGetUniformLocation(m_ProgramID, "projection_view");
+	int proj_veiw_uniform = glGetUniformLocation(m_ProgramID, "projection_view");
 	glUniformMatrix4fv(proj_veiw_uniform, 1, GL_FALSE, (float*)&m_Camera.getProjectionView());
 	FBXSkeleton* skeleton = m_file->getSkeletonByIndex(0);
 	//skeleton->updateBones();
@@ -110,7 +110,7 @@ void Animation::Draw()
 
 		glBindVertexArray(m_meshes[i].m_VAO);
 		glDrawElements(GL_TRIANGLES, m_meshes[i].m_index_count, GL_UNSIGNED_INT, 0);
-	}*/
+	}
 	Gizmos::draw(m_Camera.getProjectionView());
 	glfwSwapBuffers(this->m_window);
 	glfwPollEvents();

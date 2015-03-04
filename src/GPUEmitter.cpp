@@ -35,6 +35,7 @@ void GPUPointEmitter::Init(unsigned int maxParticles, vec3 a_position, float a_e
 	m_velocityMax = a_maxVelocity;
 	m_LifeSpanMin = a_minLifeSpan;
 	m_LifeSpanMax = a_maxLifeSpan;
+	m_emitRate = a_emitRate;
 
 	m_maxParticles = maxParticles;
 
@@ -78,22 +79,23 @@ void GPUPointEmitter::CreateUpdateShader()
 	glTransformFeedbackVaryings(m_updateShader, 4, outputs, GL_INTERLEAVED_ATTRIBS);
 	glLinkProgram(m_updateShader);
 	glDeleteShader(vertexShader);
+	GLint uniforms;
+	glGetProgramiv(m_updateShader, GL_ACTIVE_UNIFORMS, &uniforms);
 
 }
 void GPUPointEmitter::CreateDrawShader()
 {
+
 	m_drawShader = glCreateProgram();
 	LoadShaders("./Shaders/gpuParticleVert.glsl", "./Shaders/gpuParticleGeo.glsl", "./Shaders/gpuParticleFrag.glsl", &m_drawShader);
+	GLint uniforms;
+	glGetProgramiv(m_drawShader, GL_ACTIVE_UNIFORMS, &uniforms);
 }
 void GPUPointEmitter::Draw(float a_currentTime, mat4 a_cameraTransform, mat4 a_projectionView)
 {
-	//update vertex pass
-	//uniform float minVelocity;
-	//uniform float maxVelocity;
-	//uniform float minLifespan;
-	//uniform float maxLifespan;
-	//uniform float time;
 	glUseProgram(m_updateShader);
+	GLint uniforms;
+	glGetProgramiv(m_updateShader, GL_ACTIVE_UNIFORMS, &uniforms);
 	int deltaUniform = glGetUniformLocation(m_updateShader, "deltaTime");
 	int emitterUniform = glGetUniformLocation(m_updateShader, "emitterPosition");
 	int minVelUniform = glGetUniformLocation(m_updateShader, "minVelocity");
@@ -125,7 +127,6 @@ void GPUPointEmitter::Draw(float a_currentTime, mat4 a_cameraTransform, mat4 a_p
 	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, 0);
 	//render pass
 	glUseProgram(m_drawShader);
-
 	int projViewUniform = glGetUniformLocation(m_drawShader, "projectionView");
 	int cameraWorldUniform = glGetUniformLocation(m_drawShader, "cameraWorld");
 	int startSizeUniform = glGetUniformLocation(m_drawShader, "startSize");
@@ -144,5 +145,6 @@ void GPUPointEmitter::Draw(float a_currentTime, mat4 a_cameraTransform, mat4 a_p
 
 	m_activeBuffer = otherBuffer;
 	m_lastDrawTime = a_currentTime;
+	
 
 }

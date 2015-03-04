@@ -47,11 +47,11 @@ void main()
 	corners[3] += geoPosition[0];
 
 	gl_Position = projectionView * vec4(corners[0], 1);
-	EmitVertex;
+	EmitVertex();
 	gl_Position = projectionView * vec4(corners[1], 1);
-	EmitVertex;
+	EmitVertex();
 	gl_Position = projectionView * vec4(corners[2], 1);
-	EmitVertex;
+	EmitVertex();
 	gl_Position = projectionView * vec4(corners[3], 1);
-	EmitVertex;
+	EmitVertex();
 }

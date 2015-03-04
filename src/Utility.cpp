@@ -60,6 +60,7 @@ bool LoadShaders(char* vertex_filename, char* geometry_filename, char* fragmant_
 		glAttachShader(*result, geometryShader);
 		glDeleteShader(geometryShader);
 	}
+
 	if (fragmant_filename != nullptr)
 	{
 		LoadShaderType(fragmant_filename, GL_FRAGMENT_SHADER, &fragmentShader);
