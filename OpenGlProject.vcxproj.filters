@@ -43,6 +43,9 @@
     <Filter Include="GPU Particles">
       <UniqueIdentifier>{910fdf06-fb9b-4d73-897f-ea364432b382}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SceneManagement">
+      <UniqueIdentifier>{df533ae1-cb1c-44a5-b48e-9d1dfc36146d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\gl_core_4_4.h">
@@ -111,6 +114,9 @@
     <ClInclude Include="src\GPUEmitter.h">
       <Filter>GPU Particles</Filter>
     </ClInclude>
+    <ClInclude Include="src\Scene.h">
+      <Filter>SceneManagement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gl_core_4_4.c">
@@ -169,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="src\GPUEmitter.cpp">
       <Filter>GPU Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene.cpp">
+      <Filter>SceneManagement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

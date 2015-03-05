@@ -103,6 +103,7 @@
     <ClInclude Include="src\Particle.h" />
     <ClInclude Include="src\Quaternions.h" />
     <ClInclude Include="src\Rendering Geometry.h" />
+    <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\Texturing.h" />
     <ClInclude Include="src\tiny_obj_loader.h" />
@@ -126,6 +127,7 @@
     <ClCompile Include="src\Particle.cpp" />
     <ClCompile Include="src\Quaternions.cpp" />
     <ClCompile Include="src\Rendering Geometry.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Texturing.cpp" />
     <ClCompile Include="src\tiny_obj_loader.cc" />
     <ClCompile Include="src\Utility.cpp" />

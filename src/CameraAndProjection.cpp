@@ -8,7 +8,7 @@ bool CameraAndProjection::StartUp()
 	{
 		return false;
 	}
-	glClearColor(0.1f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	Gizmos::create();
 	m_Camera = FlyCamera();
