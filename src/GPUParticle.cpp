@@ -12,12 +12,13 @@ bool GPUParticles::StartUp()
 	}
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	Gizmos::create();
 	m_Camera = FlyCamera();
-	m_Camera.SetSpeed(5.0f);
+	m_Camera.SetSpeed(50.0f);
 	m_time = 0;
 	LoadShaders("./Shaders/ParticleVertex.glsl", "./Shaders/gpuParticleGeo.glsl", "./Shaders/ParticleFragment.glsl", &m_ProgramID);
-	m_emitter.Init(100000, vec3(0, 0, 0), 10, 1, 5, 1.2f, 3.6f, 0.05f, 0.0f, vec4(0, 1, 0, 1), vec4(1, 0, 1, 1), 10);
+	m_emitter.Init(10000000, vec3(0, 0, 0), 10, 1, 1.5f, 1.6f, 2.6f, 0.03f, 0.0f, vec4(0, 1, 0, 0), vec4(0, 0.5f , 1, 0), 10);
 	return true;
 }
 

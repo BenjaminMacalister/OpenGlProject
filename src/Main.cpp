@@ -3,13 +3,15 @@
 #include <cstdio>
 #include "Gizmos.h"
 #include "Scene.h"
+#include "Animation.h"
+#include "GPUParticle.h"
 
 
 
 
 int main()
 {
-	Scene app;
+	GPUParticles app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

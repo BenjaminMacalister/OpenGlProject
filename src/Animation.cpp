@@ -64,7 +64,7 @@ bool Animation::Update()
 		skele->m_nodes[i]->updateGlobalTransform();
 		mat4 nodeGlobal = skele->m_nodes[i]->m_globalTransform;
 		vec3 nodePos = nodeGlobal[3].xyz;
-		//Gizmos::addAABBFilled(nodePos, vec3(65.0f), vec4(1, 0, 0, 1), &nodeGlobal);
+		Gizmos::addAABBFilled(nodePos, vec3(5.0f), vec4(1, 0, 0, 1), &nodeGlobal);
 		if (skele->m_nodes[i]->m_parent != nullptr)
 		{
 			vec3 parentPos = skele->m_nodes[i]->m_parent->m_globalTransform[3].xyz;
@@ -112,6 +112,7 @@ void Animation::Draw()
 		glDrawElements(GL_TRIANGLES, m_meshes[i].m_index_count, GL_UNSIGNED_INT, 0);
 	}
 	Gizmos::draw(m_Camera.getProjectionView());
+	TwDraw();
 	glfwSwapBuffers(this->m_window);
 	glfwPollEvents();
 }
