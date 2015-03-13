@@ -2,16 +2,13 @@
 #include "GLFW\glfw3.h"
 #include <cstdio>
 #include "Gizmos.h"
-#include "Scene.h"
-#include "Animation.h"
-#include "GPUParticle.h"
-
+#include "PostProcess.h"
 
 
 
 int main()
 {
-	GPUParticles app;
+	PostProcess app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

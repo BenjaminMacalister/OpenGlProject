@@ -46,6 +46,12 @@
     <Filter Include="SceneManagement">
       <UniqueIdentifier>{df533ae1-cb1c-44a5-b48e-9d1dfc36146d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RederTargets">
+      <UniqueIdentifier>{c9e6dcff-4991-43d5-b3b0-1bcf5da54302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PostProcess">
+      <UniqueIdentifier>{d449cbfa-2385-4a5b-8645-54506b5ec692}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\gl_core_4_4.h">
@@ -117,6 +123,12 @@
     <ClInclude Include="src\Scene.h">
       <Filter>SceneManagement</Filter>
     </ClInclude>
+    <ClInclude Include="src\RenderTargets.h">
+      <Filter>RederTargets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PostProcess.h">
+      <Filter>PostProcess</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gl_core_4_4.c">
@@ -178,6 +190,12 @@
     </ClCompile>
     <ClCompile Include="src\Scene.cpp">
       <Filter>SceneManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderTargets.cpp">
+      <Filter>RederTargets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PostProcess.cpp">
+      <Filter>PostProcess</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

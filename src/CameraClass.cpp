@@ -18,6 +18,10 @@ bool Camera::update()
 void Camera::setPosition(vec3 a_Position)
 {
 	m_viewTransform = glm::lookAt(a_Position, vec3(0), vec3(0, 1, 0));
+	m_projectionTransform = glm::perspective(glm::radians(60.0f), 16 / 9.f, 0.1f, 1000.f);
+	m_WorldTransform = glm::inverse(m_viewTransform);
+	m_projectionViewTransform = m_projectionTransform * m_viewTransform;
+//	m_WorldTransform = glm::inverse(m_viewTransform);
 }
 
 bool Camera::updateProjectionViewTransform()
