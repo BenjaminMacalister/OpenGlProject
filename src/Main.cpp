@@ -2,13 +2,13 @@
 #include "GLFW\glfw3.h"
 #include <cstdio>
 #include "Gizmos.h"
-#include "PostProcess.h"
+#include "ShadowMapping.h"
 
 
 
 int main()
 {
-	PostProcess app;
+	Shadows app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

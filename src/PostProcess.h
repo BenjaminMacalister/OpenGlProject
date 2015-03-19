@@ -18,6 +18,7 @@ public:
 	unsigned int m_FBOTexture;
 	unsigned int m_FBODepth;
 	unsigned int m_postProgramID;
+	float m_time;
 	openGLData m_quad;
 
 	FlyCamera m_Camera;
