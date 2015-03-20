@@ -9,10 +9,10 @@ uniform sampler2D shadowMap;
 
 void main()
 {
-	float d = max(0, dot(-lighDir, normalize(fragNormal).xyz));
+	float d = max(0, dot(normalize(fragNormal).xyz, lighDir));
 	float shadowMapSample = texture(shadowMap, shadowCoord.xy).r;
 
-	if(shadowMapSample < shadowCoord.z - 0.01f)
+	if(shadowMapSample < shadowCoord.z)
 	{
 		d = 0;
 	}

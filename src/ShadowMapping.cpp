@@ -59,15 +59,18 @@ void Shadows::Draw()
 	glViewport(0, 0, 1024, 1024);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glUseProgram(m_shadowmapProgram);
-	vec3 lightDirection = vec3(0, -1, 0);
+	vec3 lightDirection = glm::normalize(vec3(1, 2.5f, 1));
+	//lightDirection = vec3(0, -1, 0);
 	int lightMatrixLocation = glGetUniformLocation(m_shadowmapProgram, "lightMatrix");
-	mat4 lightProjMatrix = glm::ortho(-10, 10, -10, 10, -10, 100);
-	mat4 lightView = glm::lookAt(-lightDirection, vec3(0), vec3(0, 1, 0));
+	mat4 lightProjMatrix = glm::ortho<float>(-10.0f, 10.0f, -10.0f, 10.0f, -10.0f, 10.0f);
+	mat4 lightView = glm::lookAt(lightDirection, vec3(0), vec3(0, 1, 0));
 
 	mat4 lightMatrix = lightProjMatrix * lightView;
 	glUniformMatrix4fv(lightMatrixLocation, 1, GL_FALSE, (float*)&lightMatrix);
 	glBindVertexArray(m_bunney.m_VAO);
 	glDrawElements(GL_TRIANGLES, m_bunney.m_index_count, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(m_plane.m_VAO);
+	glDrawElements(GL_TRIANGLES, m_plane.m_index_count, GL_UNSIGNED_INT, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, 1280, 720);
 
@@ -95,8 +98,8 @@ void Shadows::Draw()
 	glBindVertexArray(m_bunney.m_VAO);
 	glDrawElements(GL_TRIANGLES, m_bunney.m_index_count, GL_UNSIGNED_INT, 0);
 
-	/*glBindVertexArray(m_plane.m_VAO);
-	glDrawElements(GL_TRIANGLES, m_plane.m_index_count, GL_UNSIGNED_INT, 0);*/
+	glBindVertexArray(m_plane.m_VAO);
+	glDrawElements(GL_TRIANGLES, m_plane.m_index_count, GL_UNSIGNED_INT, 0);
 	Gizmos::draw(m_Camera.getProjectionView());
 
 	glfwSwapBuffers(this->m_window);
@@ -143,10 +146,10 @@ void Shadows::buildMeshes()
 
 	float PlaneVertexData[]
 	{
-		-10, 0, -10, 10,	0, 1, 0, 0,
-		10, 0, -10, 10,		0, 1, 0, 0,
-		10, 0,  10, 10,		0, 1, 0, 0,
-		-10, 0, 10, 10,		0, 1, 0, 0,
+		-10, 0, -10, 1,  	0, 1, 0, 0,
+		10, 0, -10, 1,		0, 1, 0, 0,
+		10, 0,  10, 1,		0, 1, 0, 0,
+		-10, 0, 10, 1,		0, 1, 0, 0,
 	};
 
 	float PlaneIndexData[]
@@ -154,7 +157,9 @@ void Shadows::buildMeshes()
 		0, 1, 2, 0, 2, 3
 	};
 	m_plane.m_index_count = 6;
+
 	glGenVertexArrays(1, &m_plane.m_VAO);
+	glBindVertexArray(m_plane.m_VAO);
 
 	glGenBuffers(1, &m_plane.m_VBO);
 	glGenBuffers(1, &m_plane.m_IBO);

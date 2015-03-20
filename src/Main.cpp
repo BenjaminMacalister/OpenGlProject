@@ -2,13 +2,13 @@
 #include "GLFW\glfw3.h"
 #include <cstdio>
 #include "Gizmos.h"
-#include "ShadowMapping.h"
+#include "DifferedRendering.h"
 
 
 
 int main()
 {
-	Shadows app;
+	DifferedRendering app;
 
 	app.StartUp();
 	if (app.StartUp() == false)
