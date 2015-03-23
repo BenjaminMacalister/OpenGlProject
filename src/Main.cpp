@@ -2,13 +2,13 @@
 #include "GLFW\glfw3.h"
 #include <cstdio>
 #include "Gizmos.h"
-#include "PostProcess.h"
+#include "RenderTargets.h"
 
 
 
 int main()
 {
-	PostProcess app;
+	RenderTarget app;
 
 	app.StartUp();
 	if (app.StartUp() == false)
