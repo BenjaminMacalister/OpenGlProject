@@ -22,7 +22,6 @@ bool CameraAndProjection::Update()
 	{
 		return false;
 	}
-	m_Camera.setPosition(vec3(2, 2, 2));
 	float dt = (float)glfwGetTime();
 	glfwSetTime(0.0);
 
