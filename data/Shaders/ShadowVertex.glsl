@@ -12,7 +12,7 @@ uniform mat4 viewProj;
 
 void main()
 {
-	fragNormal = vec4(normal.xyz, 0);
+	fragNormal = normal;
 	shadowCoord = lightMatrix * position;
 	gl_Position = viewProj * vec4(position.xyz, 1);
 }

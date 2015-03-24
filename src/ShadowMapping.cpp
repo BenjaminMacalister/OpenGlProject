@@ -19,6 +19,7 @@ bool Shadows::StartUp()
 	LoadShaders("./Shaders/ShadowVertex.glsl", nullptr, "./Shaders/ShadowFragment.glsl", &m_diffuseShadowedProgram);
 	LoadShaders("./Shaders/ShadowMapVertex.glsl", nullptr, "./Shaders/ShadowMapFragment.glsl", &m_shadowmapProgram);
 	buildMeshes();
+	buildShadowsMap();
 	return true;
 }
 
@@ -95,11 +96,13 @@ void Shadows::Draw()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_fboDepth);
 
+	glBindVertexArray(m_plane.m_VAO);
+	glDrawElements(GL_TRIANGLES, m_plane.m_index_count, GL_UNSIGNED_INT, 0);
+
 	glBindVertexArray(m_bunney.m_VAO);
 	glDrawElements(GL_TRIANGLES, m_bunney.m_index_count, GL_UNSIGNED_INT, 0);
 
-	glBindVertexArray(m_plane.m_VAO);
-	glDrawElements(GL_TRIANGLES, m_plane.m_index_count, GL_UNSIGNED_INT, 0);
+	
 	Gizmos::draw(m_Camera.getProjectionView());
 
 	glfwSwapBuffers(this->m_window);
@@ -146,10 +149,10 @@ void Shadows::buildMeshes()
 
 	float PlaneVertexData[]
 	{
-		-10, 0, -10, 1,  	0, 1, 0, 0,
-		10, 0, -10, 1,		0, 1, 0, 0,
-		10, 0,  10, 1,		0, 1, 0, 0,
-		-10, 0, 10, 1,		0, 1, 0, 0,
+		-10, 0.1f, -10, 1,  	0, 1, 0, 0,
+		10, 0.1f, -10, 1,		0, 1, 0, 0,
+		10, 0.1f,  10, 1,		0, 1, 0, 0,
+		-10, 0.1f, 10, 1,		0, 1, 0, 0,
 	};
 
 	float PlaneIndexData[]
@@ -201,6 +204,11 @@ void Shadows::buildShadowsMap()
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_fboDepth, 0);
 
 	glDrawBuffer(GL_NONE);
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (status != GL_FRAMEBUFFER_COMPLETE)
+	{
+		printf("framBuffer Error\n");
+	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 

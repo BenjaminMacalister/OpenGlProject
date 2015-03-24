@@ -12,10 +12,10 @@ void main()
 	float d = max(0, dot(normalize(fragNormal).xyz, lighDir));
 	float shadowMapSample = texture(shadowMap, shadowCoord.xy).r;
 
-	if(shadowMapSample < shadowCoord.z)
+	if(shadowMapSample < shadowCoord.z - 0.1f)
 	{
 		d = 0;
 	}
 
-	fragColour = vec4(d,d,d,1);
+	fragColour = vec4(d,d,d, 1);
 }
