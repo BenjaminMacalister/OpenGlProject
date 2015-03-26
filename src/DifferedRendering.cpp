@@ -19,9 +19,14 @@ bool DifferedRendering::StartUp()
 	buildGBuffer();
 	buildLightBuffer();
 	buildQuad();
+	buildCube();
 	LoadShaders("./Shaders/gBufferVertex.glsl", nullptr, "./Shaders/gBufferFragment.glsl", &m_gBufferProgram);
 	LoadShaders("./Shaders/CompositeVertex.glsl", nullptr, "./Shaders/CompositeFragment.glsl", &m_compositeProgram);
 	LoadShaders("./Shaders/CompositeVertex.glsl", nullptr, "./Shaders/DirectionalLightFragment.glsl", &m_dirrectionalLightProgram);
+	LoadShaders("./Shaders/pointLightVertex.glsl", nullptr, "./Shaders/pointLightFragment.glsl", &m_PointLightProgram);
+	m_time = 0;
+	glEnable(GL_CULL_FACE);
+
 	
 	return true;
 }
@@ -107,6 +112,32 @@ void DifferedRendering::Draw()
 	RenderDirectionalLight(vec3(0, 1, 0), vec3(0, 1, 0));
 	RenderDirectionalLight(vec3(1, 0, 0), vec3(0.5f, 0.2f, 0.2f));
 
+	glUseProgram(m_PointLightProgram);
+	viewProjUnif = glGetUniformLocation(m_PointLightProgram, "projView");
+	positionTexUnif = glGetUniformLocation(m_PointLightProgram, "positionTexture");
+	normalTexUnif = glGetUniformLocation(m_PointLightProgram, "normalTexture");
+
+	glUniformMatrix4fv(viewProjUnif, 1, GL_FALSE, (float*)&m_Camera.m_projectionViewTransform);
+	glUniform1i(positionTexUnif, 0);
+	glUniform1i(normalTexUnif, 1);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_positionTexture);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_normalTexture);
+	////draw POintLights;
+	float dt = (float)glfwGetTime();
+	glfwSetTime(0);
+	m_time += dt;
+	RenderPointLight(vec3(0, 10, 0), 15, vec3(1, 1, 0));
+	RenderPointLight(vec3(5, 5, 0), 15, vec3(0, 1, 0));
+	RenderPointLight(vec3(-5, 5, 0), 15, vec3(0, 0, 1));
+	RenderPointLight(vec3(-1, 0, 1), 5, vec3(1, 0, 0));
+	RenderPointLight(vec3(0, 1, 5), 5, vec3(0, 1, 1));
+	RenderPointLight(vec3(-1, 4,5), 5, vec3(0, 1, 1));
+	RenderPointLight(vec3(sinf(m_time) * 5, 3, cosf(m_time) * 5), 5, vec3(1, 1, 1));
+
 	glDisable(GL_BLEND);
 	//composite pass
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -137,7 +168,7 @@ void DifferedRendering::Draw()
 
 	glBindVertexArray(m_screenSpaceQuad.m_VAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	Gizmos::draw(m_Camera.getProjectionView());
+	//Gizmos::draw(m_Camera.getProjectionView());
 
 	glfwSwapBuffers(this->m_window);
 	glfwPollEvents();
@@ -160,6 +191,24 @@ void DifferedRendering::RenderDirectionalLight(vec3 a_lightDirection, vec3 a_lig
 	glBindVertexArray(m_screenSpaceQuad.m_VAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+}
+
+void DifferedRendering::RenderPointLight(vec3 a_position, float a_radius, vec3 a_diffuse)
+{
+	vec4 viewSpacePos = m_Camera.m_viewTransform * vec4(a_position, 1);
+
+	int posUniform = glGetUniformLocation(m_PointLightProgram, "lightPosition");
+	int viewPosUniform = glGetUniformLocation(m_PointLightProgram, "lighViewPosition");
+	int lightDiffuseUniform = glGetUniformLocation(m_PointLightProgram, "lightDiffuse");
+	int lightRadiusUniform = glGetUniformLocation(m_PointLightProgram, "lightRadius");
+
+	glUniform3fv(posUniform, 1, (float*)&a_position);
+	glUniform3fv(viewPosUniform, 1, (float*)&viewSpacePos);
+	glUniform3fv(lightDiffuseUniform, 1, (float*)&a_diffuse);
+	glUniform1f(lightRadiusUniform, a_radius);
+
+	glBindVertexArray(m_lightCube.m_VAO);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 }
 void DifferedRendering::buildMeshes()
 {
@@ -214,7 +263,7 @@ void DifferedRendering::buildGBuffer()
 
 	glGenTextures(1, &m_positionTexture);
 	glBindTexture(GL_TEXTURE_2D, m_positionTexture);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB8, 1280, 720);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, 1280, 720);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -303,6 +352,57 @@ void DifferedRendering::buildQuad()
 
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float)* 6, 0);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float)* 6, ((char*)0) + 16);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+}
+
+
+void DifferedRendering::buildCube()
+{
+	float vertexData[] =
+	{
+		-1, -1, 1, 1,
+		1, -1, 1, 1,
+		1, -1, -1, 1,
+		-1, -1, -1, 1,
+
+		-1, 1, 1, 1,
+		1, 1, 1, 1,
+		1, 1, -1, 1,
+		-1, 1, -1, 1,
+	};
+	unsigned int indexData[] = {
+		4, 5, 0,
+		5, 1, 0,
+		5, 6, 1,
+		6, 2, 1,
+		6, 7, 2,
+		7, 3, 2,
+		7, 4, 3,
+		4, 0 ,3,
+		7, 6, 4, 
+		6, 5, 4, 
+		0, 1, 3, 
+		1, 2, 3,
+	};
+	glGenVertexArrays(1, &m_lightCube.m_VAO);
+
+	glGenBuffers(1, &m_lightCube.m_VBO);
+	glGenBuffers(1, &m_lightCube.m_IBO);
+
+	glBindVertexArray(m_lightCube.m_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_lightCube.m_VBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_lightCube.m_IBO);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	
+
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float)* 4, 0);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

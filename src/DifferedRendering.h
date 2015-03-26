@@ -18,8 +18,11 @@ public:
 	void buildGBuffer();
 	void buildLightBuffer();
 	void buildQuad();
+	void buildCube();
 	void RenderDirectionalLight(vec3 a_lightDirection, vec3 a_lightColour);
+	void RenderPointLight(vec3 position, float radius, vec3 diffuse);
 	//LoadMesh
+	openGLData m_lightCube;
 	openGLData m_bunny;
 	openGLData m_screenSpaceQuad;
 
@@ -41,7 +44,7 @@ public:
 	unsigned int m_PointLightProgram;
 	unsigned int m_SpotLightProgram;
 	unsigned int m_compositeProgram;
-
+	float m_time;
 
 	FlyCamera m_Camera;
 

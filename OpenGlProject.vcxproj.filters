@@ -298,5 +298,11 @@
     <None Include="data\Shaders\DirectionalLightFragment.glsl">
       <Filter>DifferedRendering</Filter>
     </None>
+    <None Include="data\Shaders\pointLightVertex.glsl">
+      <Filter>DifferedRendering</Filter>
+    </None>
+    <None Include="data\Shaders\pointLightFragment.glsl">
+      <Filter>DifferedRendering</Filter>
+    </None>
   </ItemGroup>
 </Project>
