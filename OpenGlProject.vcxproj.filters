@@ -58,6 +58,9 @@
     <Filter Include="DifferedRendering">
       <UniqueIdentifier>{5fde7959-6f4b-4bc6-b4a4-75f08fe473bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Procedural Generation">
+      <UniqueIdentifier>{aabe5415-f8b1-4aae-8c7c-f1dbe0f4201d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\gl_core_4_4.h">
@@ -141,6 +144,9 @@
     <ClInclude Include="src\DifferedRendering.h">
       <Filter>DifferedRendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\ProceduralGeneration.h">
+      <Filter>Procedural Generation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gl_core_4_4.c">
@@ -214,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="src\DifferedRendering.cpp">
       <Filter>DifferedRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProceduralGeneration.cpp">
+      <Filter>Procedural Generation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -303,6 +312,12 @@
     </None>
     <None Include="data\Shaders\pointLightFragment.glsl">
       <Filter>DifferedRendering</Filter>
+    </None>
+    <None Include="data\Shaders\perlinVertex.glsl">
+      <Filter>Procedural Generation</Filter>
+    </None>
+    <None Include="data\Shaders\perlinFragment.glsl">
+      <Filter>Procedural Generation</Filter>
     </None>
   </ItemGroup>
 </Project>

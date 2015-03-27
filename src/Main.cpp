@@ -3,13 +3,13 @@
 #include <cstdio>
 #include "Gizmos.h"
 
-#include "DifferedRendering.h"
+#include "ProceduralGeneration.h"
 
 
 
 int main()
 {
-	DifferedRendering app;
+	ProceduralGeneration app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

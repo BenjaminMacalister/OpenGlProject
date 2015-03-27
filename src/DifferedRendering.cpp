@@ -132,7 +132,7 @@ void DifferedRendering::Draw()
 	m_time += dt;
 	RenderPointLight(vec3(0, 10, 0), 15, vec3(1, 1, 0));
 	RenderPointLight(vec3(5, 5, 0), 15, vec3(0, 1, 0));
-	RenderPointLight(vec3(-5, 5, 0), 15, vec3(0, 0, 1));
+	RenderPointLight(vec3(-5, 5, 0), 15, vec3(0, 0, 1)); 
 	RenderPointLight(vec3(-1, 0, 1), 5, vec3(1, 0, 0));
 	RenderPointLight(vec3(0, 1, 5), 5, vec3(0, 1, 1));
 	RenderPointLight(vec3(-1, 4,5), 5, vec3(0, 1, 1));
