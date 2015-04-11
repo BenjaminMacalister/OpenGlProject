@@ -12,6 +12,6 @@ void main()
 	fragTexCoord = texCoord;
 
 	vec4 pos = position;
-	pos.y += texture(perlinTexture, texCoord).r * 10;
+	pos.y += texture(perlinTexture, texCoord).r * 300;
 	gl_Position = viewProj * pos;
 }

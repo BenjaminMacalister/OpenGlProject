@@ -72,10 +72,10 @@ void GPUPointEmitter::CreateBuffers()
 void GPUPointEmitter::CreateUpdateShader()
 {
 	unsigned int vertexShader;
-	LoadShaderType("./Shaders/particleUpdate.glsl", GL_VERTEX_SHADER, &vertexShader);
+	LoadShaderType("./Shaders/ParticleUpdate.glsl", GL_VERTEX_SHADER, &vertexShader);
 	m_updateShader = glCreateProgram();
 	glAttachShader(m_updateShader, vertexShader);
-	const char* outputs[4] = { "updatedPosition", "updatedVelocity", "updatedLifetime", "updatedLifespan" };
+	const char* outputs[4] = { "updatedPosition", "updatedVelocity", "updatedLifetime", "updatedLifespan"};
 	glTransformFeedbackVaryings(m_updateShader, 4, outputs, GL_INTERLEAVED_ATTRIBS);
 	glLinkProgram(m_updateShader);
 	glDeleteShader(vertexShader);
@@ -103,7 +103,6 @@ void GPUPointEmitter::Draw(float a_currentTime, mat4 a_cameraTransform, mat4 a_p
 	int minLifeUniform = glGetUniformLocation(m_updateShader, "minLifespan");
 	int maxLifeUniform = glGetUniformLocation(m_updateShader, "maxLifespan");
 	int timeUniform = glGetUniformLocation(m_updateShader, "time");
-
 	glUniform1f(deltaUniform, a_currentTime - m_lastDrawTime);
 	glUniform3fv(emitterUniform, 1, (float*)&m_position);
 	glUniform1f(minVelUniform, m_velocityMin);

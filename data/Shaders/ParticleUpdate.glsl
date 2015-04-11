@@ -30,13 +30,14 @@ uniform float time;
 void main()
 {
 	//move particles based on velocity
+
 	updatedPosition = (position + velocity * deltaTime);
 	updatedVelocity = velocity;
-	updatedVelocity.y -= (10.6*deltaTime);
+	//updatedVelocity.y -= (10.6*deltaTime);
 	updatedLifespan = lifespan;
 	//update the lifetime based on delta time
 	updatedLifetime = lifetime+ deltaTime;
-
+	updatedPosition.y -= updatedLifetime*(3000*deltaTime);
 	//spawn new particles if we need to
 	if(updatedLifetime > lifespan)
 	{

@@ -3,13 +3,14 @@
 #include <cstdio>
 #include "Gizmos.h"
 
-#include "ProceduralGeneration.h"
-
+#include "Assignment1Main.h"
+#include "GPUParticle.h"
+#include "Particle.h"
 
 
 int main()
 {
-	ProceduralGeneration app;
+	Assignment1 app;
 
 	app.StartUp();
 	if (app.StartUp() == false)

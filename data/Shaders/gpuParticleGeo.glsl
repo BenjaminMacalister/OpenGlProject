@@ -40,7 +40,7 @@ void main()
 	corners[1] = billboardRot * corners[1];
 	corners[2] = billboardRot * corners[2];
 	corners[3] = billboardRot * corners[3];
-	
+
 	corners[0] += geoPosition[0];
 	corners[1] += geoPosition[0];
 	corners[2] += geoPosition[0];

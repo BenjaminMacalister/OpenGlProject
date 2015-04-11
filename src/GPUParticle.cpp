@@ -18,7 +18,7 @@ bool GPUParticles::StartUp()
 	m_Camera.SetSpeed(50.0f);
 	m_time = 0;
 	LoadShaders("./Shaders/ParticleVertex.glsl", "./Shaders/gpuParticleGeo.glsl", "./Shaders/ParticleFragment.glsl", &m_ProgramID);
-	m_emitter.Init(10000000, vec3(0, 0, 0), 10, 1, 1.5f, 1.6f, 2.6f, 0.03f, 0.0f, vec4(0, 1, 0, 0), vec4(0, 0.5f , 1, 0), 10);
+	m_emitter.Init(10000000, vec3(0, 0, 0), 10, 1, 1.5f, 0.06f, 0.6f, 0.03f, 0.0f, vec4(0, 1, 0, 0), vec4(0, 0.5f , 1, 0), 10);
 	return true;
 }
 
