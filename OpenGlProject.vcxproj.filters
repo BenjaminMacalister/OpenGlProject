@@ -346,5 +346,8 @@
     <None Include="data\Shaders\ParticleUpdate.glsl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="data\Shaders\perlinFragmentTextured.glsl">
+      <Filter>Asignment1</Filter>
+    </None>
   </ItemGroup>
 </Project>

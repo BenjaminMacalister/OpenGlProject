@@ -171,6 +171,7 @@
     <None Include="data\Shaders\ParticleUpdate.glsl" />
     <None Include="data\Shaders\ParticleVertex.glsl" />
     <None Include="data\Shaders\perlinFragment.glsl" />
+    <None Include="data\Shaders\perlinFragmentTextured.glsl" />
     <None Include="data\Shaders\perlinVertex.glsl" />
     <None Include="data\Shaders\pointLightFragment.glsl" />
     <None Include="data\Shaders\pointLightVertex.glsl" />

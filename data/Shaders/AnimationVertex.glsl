@@ -16,10 +16,10 @@ void main()
 
 	ivec4 indices = ivec4(boneIndices);
 	vec4 finalPosition = vec4(0,0,0,0);
-	finalPosition += bones[indices.x] * position * boneWeights.x;
-	finalPosition += bones[indices.y] * position * boneWeights.y;
-	finalPosition += bones[indices.z] * position * boneWeights.z;
-	finalPosition += bones[indices.w] * position * boneWeights.w;
+	finalPosition += bones[indices.x] * position * boneWeights.x*10;
+	finalPosition += (bones[indices.y] * position * boneWeights.y*10);
+	finalPosition += bones[indices.z] * position * boneWeights.z*10;
+	finalPosition += bones[indices.w] * position * boneWeights.w*10;
 	finalPosition.w = 1;
 	gl_Position = projection_view * world * finalPosition;
 }

@@ -3,6 +3,7 @@
 #include "GLFW/glfw3.h"
 #include "Gizmos.h"
 #include "Utility.h"
+#include "stb_image.h"
 bool Assignment1::StartUp()
 {
 	if (Application::StartUp() == false)
@@ -15,6 +16,7 @@ bool Assignment1::StartUp()
 	Gizmos::create();
 	dims = 128;
 	size = 2000;
+	m_speedCamera = 500.0f;
 	octaves = 5;
 	persistance = 0.2f;
 	buildGrid(vec2(size, size), glm::ivec2(dims, dims));
@@ -23,15 +25,17 @@ bool Assignment1::StartUp()
 	m_rainParticle = RainParticles();
 	m_lighting = AssignLighting();
 	m_character = Animation();
-	m_Camera.SetSpeed(500.0f);
+	m_Camera.SetSpeed(m_speedCamera);
 	m_rainParticle.StartUp();
 	m_lighting.StartUp();
 	m_character.StartUp();
-	LoadShaders("./Shaders/perlinVertex.glsl", nullptr, "./Shaders/perlinFragment.glsl", &m_programID);
+	LoadShaders("./Shaders/perlinVertex.glsl", nullptr, "./Shaders/perlinFragmentTextured.glsl", &m_programID);
+	LoadTexture();
 	TwAddVarRW(m_bar, "Perlin", TW_TYPE_FLOAT, &dims, "");
 	TwAddVarRW(m_bar, "Size", TW_TYPE_FLOAT, &size, "");
 	TwAddVarRW(m_bar, "Octaves", TW_TYPE_INT32, &octaves, "");
 	TwAddVarRW(m_bar, "Persistance", TW_TYPE_FLOAT, &persistance, "");
+	TwAddVarRW(m_bar, "CameraSpeed", TW_TYPE_FLOAT, &m_speedCamera, "");
 	glPolygonMode(GL_FRONT_AND_BACK, GL_POLYGON_MODE);
 	return true;
 }
@@ -59,9 +63,10 @@ bool Assignment1::Update()
 	}
 	if (glfwGetKey(m_window, GLFW_KEY_R) == GLFW_PRESS)
 	{
-		LoadShaders("./Shaders/perlinVertex.glsl", nullptr, "./Shaders/perlinFragment.glsl", &m_programID);
+		LoadShaders("./Shaders/perlinVertex.glsl", nullptr, "./Shaders/perlinFragmentTextured.glsl", &m_programID);
 		buildPerlinTexture(glm::ivec2(dims, dims), octaves, persistance);
 		buildGrid(vec2(size, size), glm::ivec2(dims, dims));
+		m_Camera.SetSpeed(m_speedCamera);
 	}
 	m_lighting.Update();
 	m_Camera.update(dt);
@@ -85,6 +90,20 @@ void Assignment1::Draw()
 
 	glUniformMatrix4fv(viewProjUnif, 1, GL_FALSE, (float*)&m_Camera.getProjectionView());
 	int texUniform = glGetUniformLocation(m_programID, "perlinTexture");
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_RockTexture);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_GrassTexture);
+
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, m_WaterTexture);
+	int rock_location = glGetUniformLocation(m_programID, "RockTexture");
+	int grass_location = glGetUniformLocation(m_programID, "GrassTexture");
+	int water_location = glGetUniformLocation(m_programID, "WaterTexture");
+	glUniform1i(rock_location, 1);
+	glUniform1i(grass_location, 2);
+	glUniform1i(water_location, 3);
 	glUniform1i(texUniform, 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_perlinTexture);
@@ -213,4 +232,40 @@ void Assignment1::buildPerlinTexture(glm::ivec2 dims, int octaves, float persist
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+}
+
+void Assignment1::LoadTexture()
+{
+	int width, height;
+
+	int channels;
+	unsigned char* data = stbi_load("./textures/Land/RockTexture.jpg", &width, &height, &channels, STBI_default);
+	glGenTextures(1, &m_RockTexture);
+	glBindTexture(GL_TEXTURE_2D, m_RockTexture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	stbi_image_free(data);
+
+	data = stbi_load("./textures/Land/GrassTexture.jpg", &width, &height, &channels, STBI_default);
+	glGenTextures(1, &m_GrassTexture);
+	glBindTexture(GL_TEXTURE_2D, m_GrassTexture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	stbi_image_free(data);
+
+	data = stbi_load("./textures/Land/WaterTexture.jpg", &width, &height, &channels, STBI_default);
+	glGenTextures(1, &m_WaterTexture);
+	glBindTexture(GL_TEXTURE_2D, m_WaterTexture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	stbi_image_free(data);
 }
