@@ -89,6 +89,10 @@ void Assignment1::Draw()
 	int viewProjUnif = glGetUniformLocation(m_programID, "viewProj");
 
 	glUniformMatrix4fv(viewProjUnif, 1, GL_FALSE, (float*)&m_Camera.getProjectionView());
+
+	int worldProjUnif = glGetUniformLocation(m_programID, "worldProj");
+
+	glUniformMatrix4fv(worldProjUnif, 1, GL_FALSE, (float*)&m_Camera.m_WorldTransform);
 	int texUniform = glGetUniformLocation(m_programID, "perlinTexture");
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, m_RockTexture);

@@ -162,6 +162,9 @@
     <ClInclude Include="src\AssignmentAnim.h">
       <Filter>Asignment1</Filter>
     </ClInclude>
+    <ClInclude Include="src\AssignmentShadows.h">
+      <Filter>Asignment1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gl_core_4_4.c">
@@ -249,6 +252,9 @@
       <Filter>Asignment1</Filter>
     </ClCompile>
     <ClCompile Include="src\AssignmentAnim.cpp">
+      <Filter>Asignment1</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AssignmentShadows.cpp">
       <Filter>Asignment1</Filter>
     </ClCompile>
   </ItemGroup>

@@ -96,12 +96,11 @@ void Shadows::Draw()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_fboDepth);
 
-	glBindVertexArray(m_plane.m_VAO);
-	glDrawElements(GL_TRIANGLES, m_plane.m_index_count, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(m_bunney.m_VAO);
 	glDrawElements(GL_TRIANGLES, m_bunney.m_index_count, GL_UNSIGNED_INT, 0);
-
+	glBindVertexArray(m_plane.m_VAO);
+	glDrawElements(GL_TRIANGLES, m_plane.m_index_count, GL_UNSIGNED_INT, 0);
 	
 	Gizmos::draw(m_Camera.getProjectionView());
 

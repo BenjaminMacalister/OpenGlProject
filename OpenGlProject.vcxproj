@@ -95,6 +95,7 @@
     <ClInclude Include="src\Assignment1Main.h" />
     <ClInclude Include="src\AssignmentAnim.h" />
     <ClInclude Include="src\AssignmentLighting.h" />
+    <ClInclude Include="src\AssignmentShadows.h" />
     <ClInclude Include="src\CameraAndProjection.h" />
     <ClInclude Include="src\CameraClass.h" />
     <ClInclude Include="src\DifferedRendering.h" />
@@ -128,6 +129,7 @@
     <ClCompile Include="src\Assignment1Main.cpp" />
     <ClCompile Include="src\AssignmentAnim.cpp" />
     <ClCompile Include="src\AssignmentLighting.cpp" />
+    <ClCompile Include="src\AssignmentShadows.cpp" />
     <ClCompile Include="src\CameraAndProjection.cpp" />
     <ClCompile Include="src\CameraClass.cpp" />
     <ClCompile Include="src\DifferedRendering.cpp" />

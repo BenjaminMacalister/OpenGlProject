@@ -20,7 +20,7 @@ bool Animation::Update(float dt)
 
 	//float dt = (float)glfwGetTime();
 	m_timer += dt;
-	//glfwSetTime(0.0);
+
 
 	if (m_timer > 4.8)
 	{
@@ -28,19 +28,13 @@ bool Animation::Update(float dt)
 	}
 	FBXSkeleton * skele = m_file->getSkeletonByIndex(0);
 	FBXAnimation* anim = m_file->getAnimationByIndex(0);
-	//skele->evaluate(anim, m_timer);
+
 	EvaluateSkeleton1(anim, skele, m_timer);
 	for (unsigned int i = 0; i < skele->m_boneCount; i++)
 	{
 		skele->m_nodes[i]->updateGlobalTransform();
 		mat4 nodeGlobal = skele->m_nodes[i]->m_globalTransform;
 		vec3 nodePos = nodeGlobal[3].xyz * 400;
-		//Gizmos::addAABBFilled(nodePos, vec3(5.0f), vec4(1, 0, 0, 1), &nodeGlobal);
-		/*if (skele->m_nodes[i]->m_parent != nullptr)
-		{
-			vec3 parentPos = skele->m_nodes[i]->m_parent->m_globalTransform[3].xyz;
-			Gizmos::addLine(nodePos, parentPos, vec4(0, 1, 0, 1));
-		}*/
 	}
 
 	return true;
@@ -52,14 +46,14 @@ void Animation::ShutDown()
 }
 void Animation::Draw(FlyCamera a_camera)
 {
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	glUseProgram(m_animationID);
 	int proj_veiw_uniform = glGetUniformLocation(m_animationID, "projection_view");
 	glUniformMatrix4fv(proj_veiw_uniform, 1, GL_FALSE, (float*)&a_camera.getProjectionView());
 	int position_uniform = glGetUniformLocation(m_animationID, "nPosition");
 	glUniform4f(position_uniform, 10, 10, 10, 10);
 	FBXSkeleton* skeleton = m_file->getSkeletonByIndex(0);
-	//skeleton->updateBones();
+
 	UpdateBones1(skeleton);
 	int BonesUniform = glGetUniformLocation(m_animationID, "bones");
 	glUniformMatrix4fv(BonesUniform, skeleton->m_boneCount, GL_FALSE, (float*)skeleton->m_bones);
@@ -80,10 +74,7 @@ void Animation::Draw(FlyCamera a_camera)
 		glBindVertexArray(m_meshes[i].m_VAO);
 		glDrawElements(GL_TRIANGLES, m_meshes[i].m_index_count, GL_UNSIGNED_INT, 0);
 	}
-	//Gizmos::draw(m_Camera.getProjectionView());
-	//TwDraw();
-	/*glfwSwapBuffers(this->m_window);
-	glfwPollEvents();*/
+
 }
 void Animation::GenerateGLMeshes1(FBXFile* fbx)
 {
@@ -109,11 +100,13 @@ void Animation::GenerateGLMeshes1(FBXFile* fbx)
 		glEnableVertexAttribArray(1); //texcoord
 		glEnableVertexAttribArray(2); //Bone indices
 		glEnableVertexAttribArray(3); //Bone weights
+		glEnableVertexAttribArray(4);//normal
 
 		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::PositionOffset);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::TexCoord1Offset);
 		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::IndicesOffset);
 		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::WeightsOffset);
+		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::NormalOffset);
 
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

@@ -117,8 +117,6 @@ void Lighting::Draw()
 
 	for (unsigned int mesh_index = 0; mesh_index < m_glData.size(); mesh_index++)
 	{
-		/*FBXMeshNode* mesh = m_FBXFile->getMeshByIndex(mesh_index);
-		unsigned int *gl_data = (unsigned int*)mesh->m_userData;*/
 		glBindVertexArray(m_glData[mesh_index].m_VAO);
 		glDrawElements(GL_TRIANGLES, m_glData[mesh_index].m_index_count, GL_UNSIGNED_INT, 0);
 	}
