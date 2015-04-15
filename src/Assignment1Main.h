@@ -25,7 +25,7 @@ public:
 	openGLData m_planeMesh;
 	unsigned int m_programID;
 	unsigned int m_perlinTexture;
-
+	TwBar* m_Bar2;
 	unsigned int m_RockTexture;
 	unsigned int m_GrassTexture;
 	unsigned int m_WaterTexture;
@@ -37,6 +37,9 @@ public:
 	int octaves;
 	float persistance;
 	bool m_rotateLight;
+	bool m_raining;
+	vec4 rainColour;
+	float rainSize;
 	vec3 m_lightDirection;
 };
 

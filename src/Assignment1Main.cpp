@@ -13,11 +13,15 @@ bool Assignment1::StartUp()
 	//srand(time(0));
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
+	m_Bar2 = TwNewBar("RainBar");
 	Gizmos::create();
 	m_rotateLight = false;
+	m_raining = true;
 	dims = 128;
 	size = 2000;
 	m_speedCamera = 500.0f;
+	rainColour = vec4(0, 0, 1, 1);
+	rainSize = 1;
 	octaves = 5;
 	persistance = 0.2f;
 	buildGrid(vec2(size, size), glm::ivec2(dims, dims));
@@ -42,6 +46,9 @@ bool Assignment1::StartUp()
 	TwAddVarRW(m_bar, "CameraSpeed", TW_TYPE_FLOAT, &m_speedCamera, "");
 	TwAddVarRW(m_bar, "lightDirection", TW_TYPE_DIR3F, &m_lightDirection, "");
 	TwAddVarRW(m_bar, "LightRotation", TW_TYPE_BOOL32, &m_rotateLight, "");
+	TwAddVarRW(m_Bar2, "Raining", TW_TYPE_BOOL32, &m_raining, "group=Rain");
+	TwAddVarRW(m_Bar2, "RainingColour", TW_TYPE_COLOR4F, &rainColour, "");
+	TwAddVarRW(m_Bar2, "RainSize", TW_TYPE_FLOAT, &rainSize, "");
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_POLYGON_MODE);
 	return true;
@@ -118,7 +125,7 @@ void Assignment1::Draw()
 	int grass_location = glGetUniformLocation(m_programID, "GrassTexture");
 	int water_location = glGetUniformLocation(m_programID, "WaterTexture");
 	int m_lightDirectionUniform = glGetUniformLocation(m_programID, "m_lightDirection");
-	glUniform3fv(m_lightDirectionUniform,1,  (float*)&m_lightDirection);
+	glUniform3fv(m_lightDirectionUniform, 1, (float*)&m_lightDirection);
 	glUniform1i(rock_location, 1);
 	glUniform1i(grass_location, 2);
 	glUniform1i(water_location, 3);
@@ -129,7 +136,10 @@ void Assignment1::Draw()
 	glDrawElements(GL_TRIANGLES, m_planeMesh.m_index_count, GL_UNSIGNED_INT, 0);
 	m_character.Draw(m_Camera, m_lightDirection, vec3(30000, 16000, -40000));
 	m_character2.Draw(m_Camera, m_lightDirection, vec3(-3000, 30000, -30000));
-	m_rainParticle.Draw(m_Camera);
+	if (m_raining == true)
+	{
+		m_rainParticle.Draw(m_Camera, rainColour, rainSize);
+	}
 	m_lighting.Draw(m_Camera);
 	Gizmos::draw(m_Camera.getProjectionView());
 	TwDraw();

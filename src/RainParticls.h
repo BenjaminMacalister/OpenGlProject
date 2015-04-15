@@ -12,7 +12,7 @@ public:
 	bool StartUp();
 	void ShutDown();
 	bool Update();
-	void Draw(FlyCamera a_camera);
+	void Draw(FlyCamera a_camera,vec4 colour, float size);
 	unsigned int m_rainID;
 	unsigned int m_texture;
 

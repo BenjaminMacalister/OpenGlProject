@@ -45,16 +45,16 @@ void RainParticles::ShutDown()
 {
 
 }
-void RainParticles::Draw(FlyCamera a_camera)
+void RainParticles::Draw(FlyCamera a_camera, vec4 colour, float size)
 {
 
-	m_emitter1.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView());
-	m_emitter2.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView());
-	m_emitter3.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView());
-	m_emitter4.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView());
-	m_emitter5.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView());
-	m_emitter6.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView());
-	m_emitter7.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView());
-	m_emitter8.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView());
-	m_emitter9.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView());
+	m_emitter1.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView(),colour, size);
+	m_emitter2.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView(),colour, size);
+	m_emitter3.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView(),colour, size);
+	m_emitter4.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView(),colour, size);
+	m_emitter5.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView(),colour, size);
+	m_emitter6.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView(),colour, size);
+	m_emitter7.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView(),colour, size);
+	m_emitter8.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView(),colour, size);
+	m_emitter9.Draw(m_time, a_camera.m_WorldTransform, a_camera.getProjectionView(),colour, size);
 }

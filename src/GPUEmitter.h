@@ -26,7 +26,7 @@ public:
 	void Init(unsigned int maxParticles, vec3 a_position, float a_emitRate,
 		float a_minLifeSpan, float a_maxLifeSpan, float a_minVelocity, float a_maxVelocity,
 		float a_startSize, float a_endSize, vec4 a_startColour, vec4 a_endColour, float gravity);
-	void Draw(float a_currentTime, mat4 a_cameraTransform, mat4 a_prohectionView);
+	void Draw(float a_currentTime, mat4 a_cameraTransform, mat4 a_prohectionView, vec4 colour, float size);
 	void CreateBuffers();
 	void CreateUpdateShader();
 	void CreateDrawShader();

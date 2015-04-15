@@ -91,7 +91,7 @@ void GPUPointEmitter::CreateDrawShader()
 	GLint uniforms;
 	glGetProgramiv(m_drawShader, GL_ACTIVE_UNIFORMS, &uniforms);
 }
-void GPUPointEmitter::Draw(float a_currentTime, mat4 a_cameraTransform, mat4 a_projectionView)
+void GPUPointEmitter::Draw(float a_currentTime, mat4 a_cameraTransform, mat4 a_projectionView, vec4 colour, float size)
 {
 	glUseProgram(m_updateShader);
 	GLint uniforms;
@@ -134,10 +134,10 @@ void GPUPointEmitter::Draw(float a_currentTime, mat4 a_cameraTransform, mat4 a_p
 	int endColourUniform = glGetUniformLocation(m_drawShader, "endColour");
 	glUniformMatrix4fv(projViewUniform, 1, GL_FALSE, (float*)&a_projectionView);
 	glUniformMatrix4fv(cameraWorldUniform, 1, GL_FALSE, (float*)&a_cameraTransform);
-	glUniform1f(startSizeUniform, m_startSize);
+	glUniform1f(startSizeUniform, size);
 	glUniform1f(endSizeUniform, m_endSize);
-	glUniform4fv(startColourUniform, 1, (float*)&m_startColour);
-	glUniform4fv(endColourUniform, 1, (float*)&m_endColour);
+	glUniform4fv(startColourUniform, 1, (float*)&colour);
+	glUniform4fv(endColourUniform, 1, (float*)&colour);
 
 	glBindVertexArray(m_VAO[otherBuffer]);
 	glDrawArrays(GL_POINTS, 0, m_maxParticles);

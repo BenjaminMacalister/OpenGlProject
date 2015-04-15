@@ -58,7 +58,7 @@ void GPUParticles::Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	Gizmos::draw(m_Camera.getProjectionView());
-	m_emitter.Draw(m_time, m_Camera.m_WorldTransform, m_Camera.getProjectionView());
+	m_emitter.Draw(m_time, m_Camera.m_WorldTransform, m_Camera.getProjectionView(), vec4(0,0,1,1), 1);
 	TwDraw();
 	glfwSwapBuffers(this->m_window);
 	glfwPollEvents();
