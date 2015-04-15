@@ -9,7 +9,7 @@ uniform sampler2D perlinTexture;
 uniform sampler2D RockTexture;
 uniform sampler2D GrassTexture;
 uniform sampler2D WaterTexture;
-
+uniform vec3 m_lightDirection;
 
 void main()
 {
@@ -40,7 +40,7 @@ void main()
 
 	vec3 N = normalize(normals.xyz);
 
-	vec3 L = normalize(vec3(-3,-2.5,0));
+	vec3 L = normalize(m_lightDirection);
 	float d = max(0,dot(N, -L));
 	vec3 FinalDiffuse = vec3(d) * vec3(1,1,1) * tempColour1.xyz;
 

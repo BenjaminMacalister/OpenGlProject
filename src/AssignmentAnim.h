@@ -10,10 +10,10 @@
 class Animation
 {
 public:
-	bool StartUp();
+	bool StartUp(char* CharacterFile, vec2 minMaxTime);
 	void ShutDown();
 	bool Update(float dt);
-	void Draw(FlyCamera a_camera);
+	void Draw(FlyCamera a_camera, vec3 ligthDirection, vec3 positions);
 
 	void GenerateGLMeshes1(FBXFile* fbx);
 
@@ -22,7 +22,9 @@ public:
 	std::vector<openGLData> m_meshes;
 
 	FBXFile* m_file;
+	FBXFile* m_file2;
 	float m_timer;
+	float m_minTimer, m_maxTimer;
 	unsigned int m_animationID;
 };
 

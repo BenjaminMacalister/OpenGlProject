@@ -15,7 +15,7 @@ void main()
 	vec4 m_colour = texture(diffuse, frag_texcoord);
 	vec4 AmbiantColour = m_colour * vec4(0.1,0.1,0.1,1);
 	vec3 N = normalize(frag_normal.xyz);
-	vec3 L = normalize(vec3(-3,-2.5,0));
+	vec3 L = normalize(vec3(light_dir));//(-3,-2.5,0));
 
 	float d = max(0,dot(N, -L));
 	vec3 FinalDiffuse = vec3(d) * vec3(1,1,1) * m_colour.xyz;

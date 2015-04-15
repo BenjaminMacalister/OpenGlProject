@@ -3,15 +3,17 @@
 #include "GLFW/glfw3.h"
 #include "Gizmos.h"
 //#define STB_IMAGE_IMPLEMENTATION
-bool Animation::StartUp()
+bool Animation::StartUp(char* CharacterFile, vec2 minMaxTime)
 {
 
-	m_timer = 2.5;
+	m_timer = minMaxTime.x;
 	m_file = new FBXFile;
-	m_file->load("./models/characters/Enemyelite/EnemyElite.fbx");
+	m_file->load(CharacterFile);
 	m_file->initialiseOpenGLTextures();
 	GenerateGLMeshes1(m_file);
 	LoadShaders("./Shaders/AnimationVertex.glsl", nullptr, "./Shaders/AnimationFragment.glsl", &m_animationID);
+	m_minTimer = minMaxTime.x;//2.7;
+	m_maxTimer = minMaxTime.y;// 4.8;
 	return true;
 }
 
@@ -22,9 +24,9 @@ bool Animation::Update(float dt)
 	m_timer += dt;
 
 
-	if (m_timer > 4.8)
+	if (m_timer > m_maxTimer)
 	{
-		m_timer = 2.7;
+		m_timer = m_minTimer;
 	}
 	FBXSkeleton * skele = m_file->getSkeletonByIndex(0);
 	FBXAnimation* anim = m_file->getAnimationByIndex(0);
@@ -44,7 +46,7 @@ void Animation::ShutDown()
 	m_file->unload();
 	delete m_file;
 }
-void Animation::Draw(FlyCamera a_camera)
+void Animation::Draw(FlyCamera a_camera, vec3 ligthDirection, vec3 positions)
 {
 
 	glUseProgram(m_animationID);
@@ -52,12 +54,16 @@ void Animation::Draw(FlyCamera a_camera)
 	glUniformMatrix4fv(proj_veiw_uniform, 1, GL_FALSE, (float*)&a_camera.getProjectionView());
 	int position_uniform = glGetUniformLocation(m_animationID, "nPosition");
 	glUniform4f(position_uniform, 10, 10, 10, 10);
+
+	int positionWorld_uniform = glGetUniformLocation(m_animationID, "worldPosition");
+	glUniform4fv(positionWorld_uniform, 1, (float*)&vec4(positions, 0));//30000, 16000, -40000, 0);
 	FBXSkeleton* skeleton = m_file->getSkeletonByIndex(0);
 
 	UpdateBones1(skeleton);
 	int BonesUniform = glGetUniformLocation(m_animationID, "bones");
 	glUniformMatrix4fv(BonesUniform, skeleton->m_boneCount, GL_FALSE, (float*)skeleton->m_bones);
-
+	int lightDirectionUniform = glGetUniformLocation(m_animationID, "light_dir");
+	glUniform3fv(lightDirectionUniform, 1, (float*)&ligthDirection);
 	int diffuseUniform = glGetUniformLocation(m_animationID, "diffuse");
 	glUniform1i(diffuseUniform, 0);
 	for (int i = 0; i < m_meshes.size(); i++)

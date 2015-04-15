@@ -19,6 +19,7 @@ public:
 	void buildGrid(vec2 realDim, glm::ivec2 dims);
 	void buildPerlinTexture(glm::ivec2 dims, int octaves, float persistance);
 	Animation m_character;
+	Animation m_character2;
 	RainParticles m_rainParticle;
 	AssignLighting m_lighting;
 	openGLData m_planeMesh;
@@ -35,6 +36,8 @@ public:
 	float m_speedCamera;
 	int octaves;
 	float persistance;
+	bool m_rotateLight;
+	vec3 m_lightDirection;
 };
 
 

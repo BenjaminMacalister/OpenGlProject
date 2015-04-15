@@ -10,10 +10,11 @@ bool Assignment1::StartUp()
 	{
 		return false;
 	}
-	srand(time(0));
+	//srand(time(0));
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	Gizmos::create();
+	m_rotateLight = false;
 	dims = 128;
 	size = 2000;
 	m_speedCamera = 500.0f;
@@ -25,17 +26,23 @@ bool Assignment1::StartUp()
 	m_rainParticle = RainParticles();
 	m_lighting = AssignLighting();
 	m_character = Animation();
+	m_character2 = Animation();
 	m_Camera.SetSpeed(m_speedCamera);
 	m_rainParticle.StartUp();
 	m_lighting.StartUp();
-	m_character.StartUp();
+	m_character.StartUp("./models/characters/Enemyelite/EnemyElite.fbx", vec2(2.7,4.8));
+	m_character2.StartUp("./models/characters/Marksman/Marksman.fbx", vec2(18.3,22));
 	LoadShaders("./Shaders/perlinVertex.glsl", nullptr, "./Shaders/perlinFragmentTextured.glsl", &m_programID);
+	m_lightDirection = vec3(-3, -2.5, 0);
 	LoadTexture();
-	TwAddVarRW(m_bar, "Perlin", TW_TYPE_FLOAT, &dims, "");
-	TwAddVarRW(m_bar, "Size", TW_TYPE_FLOAT, &size, "");
-	TwAddVarRW(m_bar, "Octaves", TW_TYPE_INT32, &octaves, "");
-	TwAddVarRW(m_bar, "Persistance", TW_TYPE_FLOAT, &persistance, "");
+	TwAddVarRW(m_bar, "Perlin", TW_TYPE_FLOAT, &dims, "group=Plain max=400");
+	TwAddVarRW(m_bar, "Size", TW_TYPE_FLOAT, &size, "group=Plain");
+	TwAddVarRW(m_bar, "Octaves", TW_TYPE_INT32, &octaves, "group=Plain");
+	TwAddVarRW(m_bar, "Persistance", TW_TYPE_FLOAT, &persistance, "group=Plain");
 	TwAddVarRW(m_bar, "CameraSpeed", TW_TYPE_FLOAT, &m_speedCamera, "");
+	TwAddVarRW(m_bar, "lightDirection", TW_TYPE_DIR3F, &m_lightDirection, "");
+	TwAddVarRW(m_bar, "LightRotation", TW_TYPE_BOOL32, &m_rotateLight, "");
+
 	glPolygonMode(GL_FRONT_AND_BACK, GL_POLYGON_MODE);
 	return true;
 }
@@ -48,7 +55,10 @@ bool Assignment1::Update()
 	}
 	float dt = (float)glfwGetTime();
 	glfwSetTime(0.0);
-
+	if (m_rotateLight == true)
+	{
+		m_lightDirection = (glm::rotate(dt, vec3(0, 1, 0))* vec4(m_lightDirection, 0)).xyz;
+	}
 	vec4 white(1);
 	vec4 black(0, 0, 0, 1);
 	vec4 blue(0, 0, 1, 1);
@@ -71,6 +81,7 @@ bool Assignment1::Update()
 	m_lighting.Update();
 	m_Camera.update(dt);
 	m_character.Update(dt);
+	m_character2.Update(dt);
 	m_rainParticle.Update();
 	return true;
 }
@@ -78,6 +89,7 @@ void Assignment1::ShutDown()
 {
 	m_rainParticle.ShutDown();
 	m_character.ShutDown();
+	m_character2.ShutDown();
 	Gizmos::destroy();
 	Application::ShutDown();
 }
@@ -105,6 +117,8 @@ void Assignment1::Draw()
 	int rock_location = glGetUniformLocation(m_programID, "RockTexture");
 	int grass_location = glGetUniformLocation(m_programID, "GrassTexture");
 	int water_location = glGetUniformLocation(m_programID, "WaterTexture");
+	int m_lightDirectionUniform = glGetUniformLocation(m_programID, "m_lightDirection");
+	glUniform3fv(m_lightDirectionUniform,1,  (float*)&m_lightDirection);
 	glUniform1i(rock_location, 1);
 	glUniform1i(grass_location, 2);
 	glUniform1i(water_location, 3);
@@ -113,7 +127,8 @@ void Assignment1::Draw()
 	glBindTexture(GL_TEXTURE_2D, m_perlinTexture);
 	glBindVertexArray(m_planeMesh.m_VAO);
 	glDrawElements(GL_TRIANGLES, m_planeMesh.m_index_count, GL_UNSIGNED_INT, 0);
-	m_character.Draw(m_Camera);
+	m_character.Draw(m_Camera, m_lightDirection, vec3(30000, 16000, -40000));
+	m_character2.Draw(m_Camera, m_lightDirection, vec3(-3000, 30000, -30000));
 	m_rainParticle.Draw(m_Camera);
 	m_lighting.Draw(m_Camera);
 	Gizmos::draw(m_Camera.getProjectionView());
@@ -202,8 +217,8 @@ void Assignment1::buildPerlinTexture(glm::ivec2 dims, int octaves, float persist
 	//allocate memory for perlin data
 	m_perlinData = new float[dims.x * dims.y];
 	vec2 offSet;
-	offSet.x = rand();
-	offSet.y = rand();
+	offSet.x = 10;
+	offSet.y = 10;
 	//loop through the pixles
 	for (int y = 0; y < dims.y; y++)
 	{
